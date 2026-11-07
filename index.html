@@ -366,7 +366,7 @@ dialog.sm-dlg::backdrop{background:rgba(3,5,12,.74);backdrop-filter:blur(10px)}
   ● circle = style · ◆ diamond = design attribute · size = share of pages<br>
   <div class="ln"><svg width="120" height="12"><defs><linearGradient id="lgph" x1="0" x2="1"><stop offset="0" stop-color="#8fc6ff" stop-opacity=".12"/><stop offset="1" stop-color="#8fc6ff" stop-opacity=".5"/></linearGradient></defs><polygon points="1,5.8 119,5.2 119,6.8 1,6.2" fill="url(#lgph)"/></svg>weak → strong correlation (phi)</div>
   Line = appear on the same page; thicker/brighter = stronger correlation (phi)</div>
-<div class="hbtns"><button class="hbtn" id="bChart">Trends over time</button><button class="hbtn on" id="bLinks">Lines: on</button><button class="hbtn on" id="bStories">Stories</button></div>
+<div class="hbtns"><button class="hbtn" id="bChart">Trends over time</button><button class="hbtn on" id="bLinks">Lines: on</button><button class="hbtn on" id="bStories">Stories</button><a class="hbtn" href="report.html" target="_blank" rel="noopener" style="text-decoration:none">Report ↗</a><a class="hbtn" href="architecture.html" target="_blank" rel="noopener" style="text-decoration:none">Architecture ↗</a></div>
 <div class="chartp" id="chartp"><button class="x" id="cX">✕</button>
   <div class="ctabs"><button class="hbtn on" data-t="pref">Preference over time</button><button class="hbtn" data-t="sup">Supply over time</button></div>
   <div class="ctabs" id="cMode"></div>
@@ -1127,4 +1127,4 @@ zIn.onclick=()=>sm.zoomBy(1.28); zOut.onclick=()=>sm.zoomBy(1/1.28);
 zFit.onclick=()=>{sm.closeInsp();sm.fitView(true);}; zFull.onclick=()=>sm.toggleFullscreen();
 ro.innerHTML=[['Styles',13],['Attributes',Object.keys(NS).length-13],['Links',DATA.links.length],['Screens',Object.values(NS).reduce((a,n)=>a+n.shots.length,0)]]
   .map(([k,v],i)=>(i?'<div class="sep"></div>':'')+`<div><span>${k}</span><b>${v}</b></div>`).join('');
-</script><script src="arena/arena_data.js?v=1794012063"></script><script src="arena/arena.js?v=1794012063"></script></body></html>
+</script><script src="arena/arena_data.js?v=1794012174"></script><script src="arena/arena.js?v=1794012174"></script></body></html>

@@ -81,7 +81,7 @@ body.arena-on #arena{display:block}
 </style>`);
 
 document.body.insertAdjacentHTML('beforeend',`
-<nav class="ar-tabs"><a href="#starmap" data-t="starmap">Starmap</a><a href="#arena" data-t="arena">Arena</a><span class="ar-sep"></span><a class="ar-ext" href="report.html" target="_blank" rel="noopener">Report ↗</a><a class="ar-ext" href="architecture.html" target="_blank" rel="noopener">Architecture ↗</a></nav>
+<nav class="ar-tabs"><a href="#starmap" data-t="starmap">Starmap</a><a href="#arena" data-t="arena">Arena</a></nav>
 <section id="arena"><div class="ar-w">
  <div class="ar-top"><div><div class="sm-eyebrow">taste.md arena · ${P.length} real prompts × 3 models</div><h1>Same prompt, same model — left with taste.md, right without.</h1>
   <p>Only the system prompt differs: the left page had taste.md, the right did not. All three models answered every prompt; switch models above.</p></div>
