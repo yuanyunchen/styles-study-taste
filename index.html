@@ -318,7 +318,8 @@ dialog.sm-dlg::backdrop{background:rgba(3,5,12,.74);backdrop-filter:blur(10px)}
 .tl button:hover,.hbtn:hover,.hbtn.on{background:var(--ice-soft)}
 .tl input{width:min(340px,40vw);accent-color:var(--ice)}
 .tl .mo{font-family:var(--font-data);font-size:15px;min-width:86px;color:var(--starlight)}
-.hbtns{position:fixed;left:26px;top:132px;z-index:11;display:flex;gap:8px}
+.hbtns{position:fixed;left:26px;top:132px;z-index:11;display:flex;gap:8px;align-items:center}
+.hbtn.hlink{text-decoration:none;font-size:14px;font-weight:600;padding:9px 18px;color:var(--starlight);border-color:rgba(143,198,255,.6);background:rgba(143,198,255,.14);box-shadow:0 0 0 1px rgba(143,198,255,.15),0 4px 16px rgba(0,0,0,.3)} .hbtn.hlink:hover{background:rgba(143,198,255,.26)} .hbtn.hlink:first-of-type{margin-left:8px}
 .hbtn{padding:7px 12px;border-radius:999px;font-size:11.5px;backdrop-filter:blur(14px);background:var(--panel)}
 .guide{position:fixed;left:26px;top:178px;z-index:11;display:flex;flex-direction:column;gap:9px;width:290px}
 .card{padding:12px 14px;background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:var(--r);cursor:pointer;transition:border-color .2s}
@@ -366,7 +367,7 @@ dialog.sm-dlg::backdrop{background:rgba(3,5,12,.74);backdrop-filter:blur(10px)}
   ● circle = style · ◆ diamond = design attribute · size = share of pages<br>
   <div class="ln"><svg width="120" height="12"><defs><linearGradient id="lgph" x1="0" x2="1"><stop offset="0" stop-color="#8fc6ff" stop-opacity=".12"/><stop offset="1" stop-color="#8fc6ff" stop-opacity=".5"/></linearGradient></defs><polygon points="1,5.8 119,5.2 119,6.8 1,6.2" fill="url(#lgph)"/></svg>weak → strong correlation (phi)</div>
   Line = appear on the same page; thicker/brighter = stronger correlation (phi)</div>
-<div class="hbtns"><button class="hbtn" id="bChart">Trends over time</button><button class="hbtn on" id="bLinks">Lines: on</button><button class="hbtn on" id="bStories">Stories</button><a class="hbtn" href="report.html" target="_blank" rel="noopener" style="text-decoration:none">Report ↗</a><a class="hbtn" href="architecture.html" target="_blank" rel="noopener" style="text-decoration:none">Architecture ↗</a></div>
+<div class="hbtns"><button class="hbtn" id="bChart">Trends over time</button><button class="hbtn on" id="bLinks">Lines: on</button><button class="hbtn on" id="bStories">Stories</button><a class="hbtn hlink" href="report.html" target="_blank" rel="noopener">Report ↗</a><a class="hbtn hlink" href="architecture.html" target="_blank" rel="noopener">Architecture ↗</a></div>
 <div class="chartp" id="chartp"><button class="x" id="cX">✕</button>
   <div class="ctabs"><button class="hbtn on" data-t="pref">Preference over time</button><button class="hbtn" data-t="sup">Supply over time</button></div>
   <div class="ctabs" id="cMode"></div>
