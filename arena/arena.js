@@ -133,13 +133,15 @@ function side_(){
   const p=P[i], rs=p.reasons?.[model], cm=p.compliance?.[model], S=D.summary||{}, o=S.overall||{};
   const myk=Object.keys(votes), mine=myk.length?myk.reduce((a,k)=>a+votes[k],0)/myk.length:null;
   return `<div class="ar-card ar-side">
-   <div class="sm-sec">This prompt · blind judges</div>
-   ${rs&&Object.keys(rs).length?`<div class="ar-note" style="margin:0 0 8px">${esc(MODELS[model])} pair; each judge saw both pages in random order.</div>${Object.entries(rs).map(([k,v])=>`<div class="ar-jv"><div class="ar-jh"><span>${esc(MODELS[k]||k)}</span><em class="${v.pick}">${v.pick==='taste'?'With taste':v.pick==='base'?'Without taste':'Tie'}</em></div><p>${esc(v.reason||'')}</p></div>`).join('')}`:'<div class="ar-note">No judge verdicts for this pair.</div>'}
-   <div class="sm-sec">taste.md rule checks</div>
-   ${cm?`<table class="ar-cmp"><tr><td></td><td>without</td><td>with</td></tr>${Object.keys(cm.taste||cm.base||{}).map(r=>`<tr><td>${esc(r)}</td>${['base','taste'].map(c=>`<td class="${cm[c]?.[r]?'y':'x'}">${cm[c]?(cm[c][r]?'✓':'✗'):'–'}</td>`).join('')}</tr>`).join('')}</table>`:'<div class="ar-note">No rule checks for this pair.</div>'}
+   <div class="sm-sec">All prompts · with-taste wins</div>
+   ${o.rate!=null?`<div class="ar-big">${pc(o.rate)}<small>95% CI ${pc(o.lo)}–${pc(o.hi)}${o.n?` · n=${o.n}`:''}</small></div>${bars(Object.keys(MODELS).filter(k=>S.models?.[k]).map(k=>({name:MODELS[k],...S.models[k]})))}<div class="ar-note">Blind pairwise judging by 3 models across all 30 evaluated prompts; 95% CI by prompt-cluster bootstrap.</div>`:''}
    <div class="sm-sec">This prompt · all three generators</div>
    ${Object.keys(MODELS).map(g=>{const v=p.reasons?.[g]||{},ks=Object.values(v),w=ks.filter(x=>x.pick==='taste').length+ks.filter(x=>x.pick==='tie').length/2;return `<div class="ar-gr${g===model?' cur':''}"><span>${esc(MODELS[g])}</span><b>${ks.map(x=>`<i class="${x.pick}"></i>`).join('')}</b><span class="v">${ks.length?`${w}/${ks.length}`:'–'}</span></div>`}).join('')}
-   <div class="ar-note">Judges preferring the with-taste page, per generator model. ${o.rate!=null?`Across all 30 evaluated prompts: ${pc(o.rate)} (95% CI ${pc(o.lo)}–${pc(o.hi)}, n=${o.n}).`:''}</div>
+   <div class="ar-note">Judges preferring the with-taste page, per generator model. </div>
+   <div class="sm-sec">taste.md rule checks</div>
+   ${cm?`<table class="ar-cmp"><tr><td></td><td>without</td><td>with</td></tr>${Object.keys(cm.taste||cm.base||{}).map(r=>`<tr><td>${esc(r)}</td>${['base','taste'].map(c=>`<td class="${cm[c]?.[r]?'y':'x'}">${cm[c]?(cm[c][r]?'✓':'✗'):'–'}</td>`).join('')}</tr>`).join('')}</table>`:'<div class="ar-note">No rule checks for this pair.</div>'}
+   <div class="sm-sec">This prompt · blind judges</div>
+   ${rs&&Object.keys(rs).length?`<div class="ar-note" style="margin:0 0 8px">${esc(MODELS[model])} pair; each judge saw both pages in random order.</div>${Object.entries(rs).map(([k,v])=>`<div class="ar-jv"><div class="ar-jh"><span>${esc(MODELS[k]||k)}</span><em class="${v.pick}">${v.pick==='taste'?'With taste':v.pick==='base'?'Without taste':'Tie'}</em></div><p>${esc(v.reason||'')}</p></div>`).join('')}`:'<div class="ar-note">No judge verdicts for this pair.</div>'}
    <div class="sm-sec">Your votes</div>
    <div>${mine==null?'No votes yet.':`${myk.length} vote${myk.length>1?'s':''} · with-taste chosen <b style="color:var(--ice)">${pc(mine)}</b> (ties count half)`}</div>
   </div>`;

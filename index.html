@@ -360,7 +360,7 @@ dialog.sm-dlg::backdrop{background:rgba(3,5,12,.74);backdrop-filter:blur(10px)}
   <input id="mon" type="range" min="0" max="8" step="1" value="0"><div class="mo" id="moL"></div></div>
 <div class="legend"><b>Reading the map</b><br>
   Fill colour = the look itself (e.g. violet for violet accent, cream for cream background)<br>
-  Outer ring = preference beyond model strength:<br>
+  Outer ring and pp below a star = preference beyond model strength, Jan–Sep pooled:<br>
   <i style="border:2.5px solid #9ee493;background:none"></i>wins more votes · <i style="border:2.5px solid #ff8fa3;background:none"></i>wins fewer · <i style="border:2.5px solid #5d6a8f;background:none"></i>no difference<br>
   Number in node = share of default pages this month<br>
   ● circle = style · ◆ diamond = design attribute · size = share of pages<br>
@@ -979,7 +979,7 @@ const sm = Starmap({
     ctx.font=`500 ${f1.toFixed(1)}px "Space Grotesk",sans-serif`;
     if(on) plate(n.name,n.x,ly,6,f1+2);
     ctx.fillStyle=on?'#dfe7f7':'#4d5772'; ctx.fillText(n.name,n.x,ly);
-    const sub=n.eff?`${sgn(n.eff.pp)} pp Jan–Sep`+(/^(claims|fig_attr)/.test(n.eff.src)?' (model-controlled)':''):'not estimated';
+    const sub=n.eff?`${sgn(n.eff.pp)} pp`+(/^(claims|fig_attr)/.test(n.eff.src)?' (model-controlled)':''):'not estimated';
     const fs=Math.max(12.5,12.5/kk), dy=Math.max(16,16/kk);
     ctx.font=`400 ${fs.toFixed(1)}px "JetBrains Mono",monospace`;
     if(on) plate(sub,n.x,ly+dy,5,fs+2);
@@ -1127,4 +1127,4 @@ zIn.onclick=()=>sm.zoomBy(1.28); zOut.onclick=()=>sm.zoomBy(1/1.28);
 zFit.onclick=()=>{sm.closeInsp();sm.fitView(true);}; zFull.onclick=()=>sm.toggleFullscreen();
 ro.innerHTML=[['Styles',13],['Attributes',Object.keys(NS).length-13],['Links',DATA.links.length],['Screens',Object.values(NS).reduce((a,n)=>a+n.shots.length,0)]]
   .map(([k,v],i)=>(i?'<div class="sep"></div>':'')+`<div><span>${k}</span><b>${v}</b></div>`).join('');
-</script><script src="arena/arena_data.js?v=1794010300"></script><script src="arena/arena.js?v=1794010300"></script></body></html>
+</script><script src="arena/arena_data.js?v=1794011241"></script><script src="arena/arena.js?v=1794011241"></script></body></html>
