@@ -1,16 +1,16 @@
 // Arena tab: side-by-side pages generated with (left) vs without (right) taste.md. Data comes from arena/arena_data.js (window.ARENA).
 (()=>{
 const D=window.ARENA; if(!D) return;
-const MODELS={deepseek:'DeepSeek V4.1 Flash',luna:'GPT-6 Luna',haiku:'Claude Haiku 5.5'};
+const MODELS={deepseek:'DeepSeek V4.1 Flash',haiku:'Claude Haiku 5.5',luna:'GPT-6 Luna'};
 const P=D.prompts, $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pc=v=>Math.round(v*100)+'%';
 const store={get(){try{return JSON.parse(localStorage.getItem('arenaVotes')||'{}')}catch(e){return {}}},set(v){try{localStorage.setItem('arenaVotes',JSON.stringify(v))}catch(e){}}};
 let votes=store.get(), i=0, model='deepseek', dev={A:'desktop',B:'desktop'};
 
 document.head.insertAdjacentHTML('beforeend',`<style>
-.ar-tabs{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;display:flex;padding:3px;gap:2px;background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:999px}
-.ar-tabs a{padding:6px 16px;border-radius:999px;font-size:12px;color:var(--dim);text-decoration:none;font-family:var(--font-ui)}
-.ar-tabs a.on{background:var(--ice-soft);color:var(--ice)}
+.ar-tabs{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;display:flex;padding:4px;gap:4px;background:var(--panel);box-shadow:0 0 0 1px rgba(143,198,255,.18),0 6px 24px rgba(0,0,0,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:999px}
+.ar-tabs a{padding:8px 22px;border-radius:999px;font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--starlight);text-decoration:none;font-family:var(--font-ui)}
+.ar-tabs a:hover{background:rgba(143,198,255,.10)} .ar-tabs a.on{background:var(--ice);color:#0b1220}
 #arena{position:fixed;inset:0;z-index:50;overflow:auto;background:radial-gradient(ellipse at 50% 30%,#0b1120,#050710 70%);display:none;padding:62px 0 32px}
 body.arena-on #arena{display:block}
 .ar-w{max-width:1520px;margin:0 auto;padding:0 24px}
@@ -21,6 +21,7 @@ body.arena-on #arena{display:block}
 .ar-b{border:1px solid var(--line-strong);background:var(--panel);color:var(--dim);border-radius:999px;padding:6px 13px;font-size:11.5px;cursor:pointer;font-family:var(--font-ui);transition:background .2s,color .2s}
 .ar-b:hover{color:var(--starlight)} .ar-b.on{background:var(--ice-soft);color:var(--ice);border-color:rgba(143,198,255,.45)}
 .ar-b:disabled{opacity:.35;cursor:default}
+.ar-next{background:var(--ice);color:#0b1220;border-color:var(--ice);font-size:13.5px;font-weight:600;padding:9px 20px;box-shadow:0 4px 18px rgba(143,198,255,.28)} .ar-next:hover{color:#0b1220;filter:brightness(1.08)}
 .ar-sep{width:1px;height:20px;background:var(--line)}
 .ar-card{background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:var(--r)}
 .ar-pr{padding:14px 16px;display:flex;gap:16px;align-items:flex-start;margin-bottom:14px}
@@ -85,7 +86,7 @@ document.body.insertAdjacentHTML('beforeend',`
   <div class="ar-ctl" id="arM"></div></div>
  ${D.placeholder?'<div class="ar-warn">Placeholder data: the real generations are not wired in yet.</div>':''}
  <div class="ar-card ar-pr"><div class="tx" id="arTx"></div>
-  <div class="ar-ctl"><button class="ar-b on" id="arNext">Next prompt →</button></div></div>
+  <div class="ar-ctl"><button class="ar-b ar-next" id="arNext">Next prompt →</button></div></div>
  <div class="ar-main" id="arMain"></div>
 </div></section>
 <div class="ar-fs" id="arFs"><div class="h"><span id="arFsT"></span><button class="ar-b" id="arFsX">Close ✕</button></div><iframe sandbox="allow-scripts"></iframe></div>`);
@@ -155,7 +156,7 @@ function go(n){const t=$('#arTx');t.classList.add('out');setTimeout(()=>{i=n;pro
 $('#arena').addEventListener('click',e=>{
   const b=e.target.closest('button'); if(!b) return;
   if(b.dataset.m){model=b.dataset.m;controls();prompt();render(true)}
-  else if(b.id==='arNext'){let n;do n=Math.floor(Math.random()*P.length);while(P.length>1&&n===i);go(n)}
+  else if(b.id==='arNext'){go((i+1)%P.length)}
   else if(b.dataset.d){const s=b.closest('.ar-pane').dataset.s;dev[s]=b.dataset.d;b.parentNode.querySelectorAll('[data-d]').forEach(x=>x.classList.toggle('on',x===b));
     const st=b.closest('.ar-pane').querySelector('.ar-stage');st.classList.toggle('mob',dev[s]==='mobile');fill(s,350)}
   else if(b.dataset.fs!=null){const s=b.closest('.ar-pane').dataset.s,pg=page(s),fs=$('#arFs');
