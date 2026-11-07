@@ -21,7 +21,9 @@ body.arena-on #arena{display:block}
 .ar-b{border:1px solid var(--line-strong);background:var(--panel);color:var(--dim);border-radius:999px;padding:6px 13px;font-size:11.5px;cursor:pointer;font-family:var(--font-ui);transition:background .2s,color .2s}
 .ar-b:hover{color:var(--starlight)} .ar-b.on{background:var(--ice-soft);color:var(--ice);border-color:rgba(143,198,255,.45)}
 .ar-b:disabled{opacity:.35;cursor:default}
-.ar-next{background:var(--ice);color:#0b1220;border-color:var(--ice);font-size:13.5px;font-weight:600;padding:9px 20px;box-shadow:0 4px 18px rgba(143,198,255,.28)} .ar-next:hover{color:#0b1220;filter:brightness(1.08)}
+.ar-jv{padding:8px 0;border-top:1px solid var(--line)} .ar-jv:first-of-type{border-top:0} .ar-jh{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px} .ar-jh em{font-style:normal;font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px} .ar-jh em.taste{background:rgba(95,191,133,.16);color:#7fd3a0} .ar-jh em.base{background:rgba(224,102,102,.16);color:#ef8f8f} .ar-jh em.tie{background:rgba(160,170,190,.16);color:var(--dim)} .ar-jv p{margin:5px 0 0;font-size:11.5px;line-height:1.5;color:var(--dim)}
+.ar-gr{display:grid;grid-template-columns:1fr auto 36px;align-items:center;gap:10px;padding:5px 0;font-size:12.5px;color:var(--dim)} .ar-gr.cur{color:var(--starlight)} .ar-gr b{display:flex;gap:4px} .ar-gr i{width:10px;height:10px;border-radius:50%;background:#555e70} .ar-gr i.taste{background:#5fbf85} .ar-gr i.base{background:#e06666} .ar-gr .v{text-align:right;font-family:var(--font-mono,monospace)}
+.ar-next{background:var(--ice-soft);color:var(--ice);border-color:rgba(143,198,255,.55);font-size:13.5px;font-weight:600;padding:9px 20px} .ar-next:hover{background:var(--ice);color:#0b1220}
 .ar-sep{width:1px;height:20px;background:var(--line)}
 .ar-card{background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:var(--r)}
 .ar-pr{padding:14px 16px;display:flex;gap:16px;align-items:flex-start;margin-bottom:14px}
@@ -128,15 +130,16 @@ function fill(s,wait=1300){
 }
 function bars(rows){return rows.map(r=>`<div class="ar-row"><span>${r.name}</span><div class="ar-bar"><s></s>${r.lo!=null?`<u style="left:${r.lo*100}%;width:${(r.hi-r.lo)*100}%"></u>`:''}<i data-w="${r.rate*100}"></i></div><span class="v">${pc(r.rate)}</span></div>`).join('')}
 function side_(){
-  const p=P[i], j=p.judge?.[model], cm=p.compliance?.[model], S=D.summary||{}, o=S.overall||{};
+  const p=P[i], rs=p.reasons?.[model], cm=p.compliance?.[model], S=D.summary||{}, o=S.overall||{};
   const myk=Object.keys(votes), mine=myk.length?myk.reduce((a,k)=>a+votes[k],0)/myk.length:null;
   return `<div class="ar-card ar-side">
    <div class="sm-sec">This prompt · blind judges</div>
-   ${j?`<div>${esc(MODELS[model])} pair, each judge model's verdict:</div>${bars(Object.entries(j).map(([k,v])=>({name:MODELS[k]||k,rate:v})))}<div class="ar-note">Share of verdicts for the with-taste page; ties count half. Dashed line = 50%.</div>`:'<div class="ar-note">No judge verdicts for this pair.</div>'}
+   ${rs&&Object.keys(rs).length?`<div class="ar-note" style="margin:0 0 8px">${esc(MODELS[model])} pair; each judge saw both pages in random order.</div>${Object.entries(rs).map(([k,v])=>`<div class="ar-jv"><div class="ar-jh"><span>${esc(MODELS[k]||k)}</span><em class="${v.pick}">${v.pick==='taste'?'With taste':v.pick==='base'?'Without taste':'Tie'}</em></div><p>${esc(v.reason||'')}</p></div>`).join('')}`:'<div class="ar-note">No judge verdicts for this pair.</div>'}
    <div class="sm-sec">taste.md rule checks</div>
    ${cm?`<table class="ar-cmp"><tr><td></td><td>without</td><td>with</td></tr>${Object.keys(cm.taste||cm.base||{}).map(r=>`<tr><td>${esc(r)}</td>${['base','taste'].map(c=>`<td class="${cm[c]?.[r]?'y':'x'}">${cm[c]?(cm[c][r]?'✓':'✗'):'–'}</td>`).join('')}</tr>`).join('')}</table>`:'<div class="ar-note">No rule checks for this pair.</div>'}
-   <div class="sm-sec">All prompts · with-taste wins</div>
-   ${o.rate!=null?`<div class="ar-big">${pc(o.rate)}<small>95% CI ${pc(o.lo)}–${pc(o.hi)}${o.n?` · n=${o.n}`:''}</small></div>${bars(Object.entries(S.models||{}).map(([k,v])=>({name:MODELS[k]||k,...v})))}<div class="ar-note">${esc(S.note||'Blind pairwise judging; CI clustered by prompt.')}</div>`:'<div class="ar-note">Overall results not available.</div>'}
+   <div class="sm-sec">This prompt · all three generators</div>
+   ${Object.keys(MODELS).map(g=>{const v=p.reasons?.[g]||{},ks=Object.values(v),w=ks.filter(x=>x.pick==='taste').length+ks.filter(x=>x.pick==='tie').length/2;return `<div class="ar-gr${g===model?' cur':''}"><span>${esc(MODELS[g])}</span><b>${ks.map(x=>`<i class="${x.pick}"></i>`).join('')}</b><span class="v">${ks.length?`${w}/${ks.length}`:'–'}</span></div>`}).join('')}
+   <div class="ar-note">Judges preferring the with-taste page, per generator model. ${o.rate!=null?`Across all 30 evaluated prompts: ${pc(o.rate)} (95% CI ${pc(o.lo)}–${pc(o.hi)}, n=${o.n}).`:''}</div>
    <div class="sm-sec">Your votes</div>
    <div>${mine==null?'No votes yet.':`${myk.length} vote${myk.length>1?'s':''} · with-taste chosen <b style="color:var(--ice)">${pc(mine)}</b> (ties count half)`}</div>
   </div>`;
