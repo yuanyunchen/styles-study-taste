@@ -1,0 +1,1059 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web Design Taste Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<!-- Single-column report. Build: python3 make_figs_1col.py && python3 build_report.py. Two-column backup: report_2col_src.html. -->
+<style>
+:root{
+  /* Theme "luxury", restrained: ivory paper, thin ink title band, one gold accent, red/green only for sign. */
+  --paper:#FAF8F3; --ink:#14120F; --muted:#5E584F; --faint:#9A9184; --rule:#DDD6C8;
+  --band:#14120F; --band-ink:#FAF8F3; --band-muted:#BDB4A5; --accent:#9C7A3C;
+  --pos:#2F6B45; --neg:#A3322A;
+  --sans:"Inter","Helvetica Neue",Arial,sans-serif;
+  --display:"Cormorant Garamond","Playfair Display",Georgia,serif; --display-w:500;
+}
+body[data-theme="neutral"]{
+  --paper:#FFFFFF; --ink:#16181D; --muted:#5D6470; --faint:#8A909A; --rule:#D9DCE1;
+  --band:#FFFFFF; --band-ink:#16181D; --band-muted:#5D6470; --accent:#16181D; --pos:#1F7A4D; --neg:#B3261E;
+  --display:"Source Serif 4",Georgia,serif; --display-w:600;
+}
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#fff}
+body{background:var(--paper);color:var(--ink);font:8.6pt/1.55 var(--sans);font-variant-numeric:tabular-nums;
+     -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:210mm;height:297mm;padding:12mm 13mm 10mm;overflow:hidden;position:relative;background:var(--paper);
+      page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto;break-after:auto}
+@media screen{body{background:#E6E4DF}.page{margin:8mm auto;box-shadow:0 1px 4px rgba(0,0,0,.15)}}
+
+.band{margin:-12mm -13mm 0;padding:7mm 13mm 5mm;background:var(--band);color:var(--band-ink)}
+body[data-theme="neutral"] .band{border-bottom:1px solid var(--ink)}
+.band h1{font:var(--display-w) 24pt/1.05 var(--display)}
+.band .lede{font-size:9.6pt;line-height:1.5;margin-top:2mm;max-width:178mm}
+.band .meta{margin-top:2.4mm;font-size:7.6pt;color:var(--band-muted)}
+.band .meta b{color:var(--band-ink);font-weight:600}
+
+.sec{padding-top:3.6mm;margin-top:3.6mm;border-top:.5px solid var(--rule)}
+.sec:first-of-type{border-top:0}
+.sec h2{font:var(--display-w) 15pt/1.15 var(--display);color:var(--accent)}
+.sec .insight{font-weight:600;font-size:9.4pt;line-height:1.45;margin-top:1mm}
+.sec figure{margin-top:2.6mm}
+.sec figure svg{width:100%;height:auto;display:block}
+.sec .note{margin-top:2mm;color:var(--ink)}
+.sec .cap{margin-top:1.4mm;font-size:8pt;line-height:1.45;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin-top:2.4mm;font-size:8pt}
+th,td{padding:1mm 1.6mm;border-bottom:.5px solid var(--rule);text-align:left;vertical-align:top}
+thead th{font-weight:600;color:var(--muted);border-bottom:.5px solid var(--accent)}
+td.r,th.r{text-align:right;white-space:nowrap}
+td.c,th.c{text-align:center}
+.ok{color:var(--pos)} .na{color:var(--faint)} .pt{color:var(--accent)} .no{color:var(--neg)}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm;margin-top:2.4mm}
+.qa>*{min-width:0}
+.qa h3{font:600 8.6pt/1.3 var(--sans)}
+.qa ul{padding-left:3.4mm;margin-top:1mm}
+.qa li{margin-top:.8mm;font-size:8pt;line-height:1.45}
+footer{position:absolute;left:13mm;right:13mm;bottom:5mm;font-size:6.8pt;color:var(--faint);display:flex;justify-content:space-between}
+</style>
+</head>
+<body data-theme="luxury">
+
+<!-- ================= PAGE 1 ================= -->
+<div class="page">
+  <header class="band">
+    <h1>What wins a web-design vote</h1>
+    <p class="lede">Most of a vote is decided by which model drew the page and whether it works. The rest is learnable and carries over to later months and newer models: real photography, a full page and a deliberate headline typeface win; dominant gradients and sparse white minimalism lose.</p>
+    <p class="meta"><b>173,200</b> votes on prompts naming no style (about 50,000 tournaments × 5 votes, less edits, corrupt brackets and style-named prompts); <b>198,152</b> pages; <b>142</b> models; votes <b>2026-01-01 to 2026-09-29</b>; labels deepseek-v4.1-flash-1017 (model version), second labeler claude-haiku-5.5 on ~6% of votes</p>
+  </header>
+  <p class="insight" style="margin-top:4mm">Five core trends come first: how preference moved (raw, and once model strength is removed), what models supply, what users ask for, and what models supply when users name no style. Preferences stayed largely stable; supply moved with each model generation.</p>
+  <section class="sec">
+    <h2>Core trend 1: preference, raw win rate</h2>
+    <p class="insight">Some looks win more of their head-to-head votes than others, month after month: real photos stay well above half, sparse minimal pages stay below.</p>
+    <figure><svg viewBox="0 0 696 200" width="100%" role="img" aria-label="Core trend panel: raw" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<line x1="40.0" y1="106.4" x2="434.0" y2="106.4" stroke="var(--ink)" stroke-width="1" stroke-dasharray="2 3"/>
+<text x="34.0" y="155.2" text-anchor="end" fill="var(--muted)" >45%</text>
+<text x="34.0" y="110.4" text-anchor="end" fill="var(--muted)" >50%</text>
+<text x="34.0" y="65.7" text-anchor="end" fill="var(--muted)" >55%</text>
+<text x="34.0" y="20.9" text-anchor="end" fill="var(--muted)" >60%</text>
+<text x="40.0" y="196.0" text-anchor="middle" fill="var(--muted)" >Jan</text>
+<text x="89.2" y="196.0" text-anchor="middle" fill="var(--muted)" >Feb</text>
+<text x="138.5" y="196.0" text-anchor="middle" fill="var(--muted)" >Mar</text>
+<text x="187.8" y="196.0" text-anchor="middle" fill="var(--muted)" >Apr</text>
+<text x="237.0" y="196.0" text-anchor="middle" fill="var(--muted)" >May</text>
+<text x="286.2" y="196.0" text-anchor="middle" fill="var(--muted)" >Jun</text>
+<text x="335.5" y="196.0" text-anchor="middle" fill="var(--muted)" >Jul</text>
+<text x="384.8" y="196.0" text-anchor="middle" fill="var(--muted)" >Aug</text>
+<text x="434.0" y="196.0" text-anchor="middle" fill="var(--muted)" >Sep</text>
+<polyline points="40.0,40.6 89.2,62.2 138.5,58.7 187.8,46.9 237.0,68.8 286.2,54.5 335.5,61.3 384.8,52.9 434.0,38.0" fill="none" stroke="#8A6420" stroke-width="1.8" />
+<text x="444.0" y="42.0" text-anchor="start" fill="#8A6420" >Real photos 56% <tspan fill="#9A9184">(+0.1 pp)</tspan></text>
+<polyline points="40.0,81.2 89.2,75.8 138.5,91.7 187.8,87.9 237.0,77.8 286.2,80.7 335.5,97.0 384.8,93.9 434.0,85.6" fill="none" stroke="#C9A66B" stroke-width="1.8" />
+<text x="444.0" y="89.6" text-anchor="start" fill="#C9A66B" >Cream background 52% <tspan fill="#9A9184">(-1.2 pp)</tspan></text>
+<polyline points="40.0,43.2 89.2,26.5 138.5,20.5 187.8,33.5 237.0,60.7 286.2,26.2 335.5,71.2 384.8,92.1 434.0,87.2" fill="none" stroke="#7B2D3A" stroke-width="1.8" />
+<text x="444.0" y="103.6" text-anchor="start" fill="#7B2D3A" >Serif headline 53% <tspan fill="#B23A3A">(-6.0 pp)</tspan></text>
+<polyline points="40.0,111.9 89.2,122.4 138.5,122.8 187.8,138.7 237.0,141.6 286.2,127.7 335.5,126.8 384.8,114.6 434.0,115.5" fill="none" stroke="#8E6CC0" stroke-width="1.8" stroke-dasharray="6 3"/>
+<text x="444.0" y="145.6" text-anchor="start" fill="#8E6CC0" >Violet accent 48% <tspan fill="#9A9184">(-0.1 pp)</tspan></text>
+<polyline points="40.0,143.9 89.2,165.0 138.5,163.4 187.8,173.2 237.0,167.3 286.2,149.0 335.5,138.9 384.8,113.5 434.0,110.2" fill="none" stroke="#5B3C8C" stroke-width="1.8" />
+<text x="444.0" y="131.6" text-anchor="start" fill="#5B3C8C" >Purple-gradient style 48% <tspan fill="#2E7D4F">(+3.4 pp)</tspan></text>
+<polyline points="40.0,139.3 89.2,150.2 138.5,128.4 187.8,139.2 237.0,124.0 286.2,123.1 335.5,121.8 384.8,113.3 434.0,108.8" fill="none" stroke="#5F7A94" stroke-width="1.8" />
+<text x="444.0" y="117.6" text-anchor="start" fill="#5F7A94" >Dominant gradient 49% <tspan fill="#2E7D4F">(+2.7 pp)</tspan></text>
+<polyline points="40.0,132.5 89.2,124.2 138.5,144.2 187.8,127.4 237.0,136.3 286.2,153.6 335.5,143.3 384.8,126.7 434.0,126.5" fill="none" stroke="#9AA1A8" stroke-width="1.8" />
+<text x="444.0" y="173.6" text-anchor="start" fill="#9AA1A8" >Minimal-clean style 47% <tspan fill="#9A9184">(+0.0 pp)</tspan></text>
+<polyline points="40.0,96.8 89.2,89.4 138.5,76.9 187.8,83.8 237.0,85.5 286.2,92.9 335.5,93.8 384.8,111.4 434.0,120.1" fill="none" stroke="#2B2B2B" stroke-width="1.8" />
+<text x="444.0" y="159.6" text-anchor="start" fill="#2B2B2B" >Dark-minimal style 50% <tspan fill="#B23A3A">(-2.1 pp)</tspan></text>
+</svg>
+</figure>
+    <p class="cap">Line-end value = Jul–Sep mean; in brackets, the change from the Jan–Mar mean (green = up, red = down, grey = no clear change: q≥.05 or under 0.5 pp). Photo pages won 54–58% of their votes in every month (55.8% overall [55.3, 56.4]); minimal-clean pages won 45–48% (46.9% [46.2, 47.6]). Share of votes won by the side that has the feature, among votes where the two sides differ on it; 95% CIs in text (voter-cluster bootstrap). Raw rates still carry each month's model mix, which panel 2 removes.</p>
+  </section>
+  <section class="sec">
+    <h2>Core trend 2: preference beyond model strength and quality</h2>
+    <p class="insight">Model strength aside, real photos win more than expected every month and sparse minimal pages lose; the gap barely moves over nine months.</p>
+    <figure><svg viewBox="0 0 696 200" width="100%" role="img" aria-label="Core trend panel: excess" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<line x1="40.0" y1="107.2" x2="434.0" y2="107.2" stroke="var(--ink)" stroke-width="1" stroke-dasharray="2 3"/>
+<text x="34.0" y="167.8" text-anchor="end" fill="var(--muted)" >-4 pp</text>
+<text x="34.0" y="139.5" text-anchor="end" fill="var(--muted)" >-2 pp</text>
+<text x="34.0" y="111.2" text-anchor="end" fill="var(--muted)" >0 pp</text>
+<text x="34.0" y="82.8" text-anchor="end" fill="var(--muted)" >+2 pp</text>
+<text x="34.0" y="54.5" text-anchor="end" fill="var(--muted)" >+4 pp</text>
+<text x="34.0" y="26.2" text-anchor="end" fill="var(--muted)" >+6 pp</text>
+<text x="40.0" y="196.0" text-anchor="middle" fill="var(--muted)" >Jan</text>
+<text x="89.2" y="196.0" text-anchor="middle" fill="var(--muted)" >Feb</text>
+<text x="138.5" y="196.0" text-anchor="middle" fill="var(--muted)" >Mar</text>
+<text x="187.8" y="196.0" text-anchor="middle" fill="var(--muted)" >Apr</text>
+<text x="237.0" y="196.0" text-anchor="middle" fill="var(--muted)" >May</text>
+<text x="286.2" y="196.0" text-anchor="middle" fill="var(--muted)" >Jun</text>
+<text x="335.5" y="196.0" text-anchor="middle" fill="var(--muted)" >Jul</text>
+<text x="384.8" y="196.0" text-anchor="middle" fill="var(--muted)" >Aug</text>
+<text x="434.0" y="196.0" text-anchor="middle" fill="var(--muted)" >Sep</text>
+<polyline points="40.0,53.6 89.2,70.4 138.5,67.1 187.8,52.1 237.0,48.6 286.2,25.2 335.5,46.4 384.8,35.6 434.0,40.6" fill="none" stroke="#8A6420" stroke-width="1.8" />
+<text x="444.0" y="44.6" text-anchor="start" fill="#8A6420" >Real photos +4.7 <tspan fill="#9A9184">(+1.6 pp)</tspan></text>
+<polyline points="40.0,86.7 89.2,86.3 138.5,96.5 187.8,110.3 237.0,74.8 286.2,84.1 335.5,105.8 384.8,108.7 434.0,105.0" fill="none" stroke="#C9A66B" stroke-width="1.8" />
+<text x="444.0" y="145.0" text-anchor="start" fill="#C9A66B" >Cream background +0.0 <tspan fill="#9A9184">(-1.2 pp)</tspan></text>
+<polyline points="40.0,78.1 89.2,87.0 138.5,63.8 187.8,96.6 237.0,94.8 286.2,58.4 335.5,99.1 384.8,111.5 434.0,99.6" fill="none" stroke="#7B2D3A" stroke-width="1.8" />
+<text x="444.0" y="117.0" text-anchor="start" fill="#7B2D3A" >Serif headline +0.2 <tspan fill="#9A9184">(-1.8 pp)</tspan></text>
+<polyline points="40.0,123.4 89.2,106.0 138.5,114.1 187.8,111.9 237.0,130.5 286.2,111.2 335.5,119.0 384.8,104.4 434.0,100.2" fill="none" stroke="#8E6CC0" stroke-width="1.8" stroke-dasharray="6 3"/>
+<text x="444.0" y="131.0" text-anchor="start" fill="#8E6CC0" >Violet accent -0.2 <tspan fill="#9A9184">(+0.3 pp)</tspan></text>
+<polyline points="40.0,139.3 89.2,136.4 138.5,117.8 187.8,111.5 237.0,136.9 286.2,133.7 335.5,118.3 384.8,81.4 434.0,73.8" fill="none" stroke="#5B3C8C" stroke-width="1.8" />
+<text x="444.0" y="77.8" text-anchor="start" fill="#5B3C8C" >Purple-gradient style +0.6 <tspan fill="#2E7D4F">(+2.4 pp)</tspan></text>
+<polyline points="40.0,129.1 89.2,131.4 138.5,94.6 187.8,108.8 237.0,116.9 286.2,137.1 335.5,124.2 384.8,96.6 434.0,99.0" fill="none" stroke="#5F7A94" stroke-width="1.8" />
+<text x="444.0" y="103.0" text-anchor="start" fill="#5F7A94" >Dominant gradient -0.2 <tspan fill="#9A9184">(+0.7 pp)</tspan></text>
+<polyline points="40.0,139.9 89.2,125.8 138.5,159.7 187.8,140.7 237.0,135.9 286.2,136.3 335.5,134.8 384.8,131.1 434.0,135.5" fill="none" stroke="#9AA1A8" stroke-width="1.8" />
+<text x="444.0" y="173.0" text-anchor="start" fill="#9AA1A8" >Minimal-clean style -1.9 <tspan fill="#9A9184">(+0.5 pp)</tspan></text>
+<polyline points="40.0,113.0 89.2,114.5 138.5,107.0 187.8,110.7 237.0,88.8 286.2,100.6 335.5,108.6 384.8,113.9 434.0,125.3" fill="none" stroke="#2B2B2B" stroke-width="1.8" />
+<text x="444.0" y="159.0" text-anchor="start" fill="#2B2B2B" >Dark-minimal style -0.5 <tspan fill="#9A9184">(-0.2 pp)</tspan></text>
+</svg>
+</figure>
+    <p class="cap">Line-end value = Jul–Sep mean; in brackets, the change from the Jan–Mar mean (green = up, red = down, grey = no clear change: q≥.05 or under 0.5 pp). Photos stay +2.6 to +5.8 pp above expectation in every month (+4.2 pp [3.6, 4.8] overall, every monthly CI above 0); minimal-clean stays −1.3 to −3.7 pp below (−2.1 [−2.7, −1.4]). Actual minus expected win rate (Bradley–Terry model strength plus quality); 95% CIs in text. Serif headline and cream background lose their edge after June at the same time, possibly the same phenomenon (serif often pairs with cream). Purple-gradient pages turn positive in Aug–Sep, but single-month CIs include 0 on 1.3k and 0.8k votes: direction undetermined.</p>
+  </section>
+
+  <footer><span>Styles Study taste report, observed until 2026-09-29</span><span>1 / 10</span></footer>
+</div>
+
+<!-- ================= PAGE 2 ================= -->
+<div class="page">
+  <section class="sec" style="margin-top:0;padding-top:0;border-top:0">
+    <h2>How much did preference change? (Jan–Mar to Jul–Sep)</h2>
+    <p class="insight">Raw win rates shifted, but almost all of that shift came from which models used a look, not from voters changing their minds.</p>
+    <figure><svg viewBox="0 0 696 216" width="100%" role="img" aria-label="Preference change Jan-Mar to Jul-Sep" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<text x="260.7" y="12.0" text-anchor="middle" fill="var(--muted)" font-weight="600">Raw win rate, pp</text>
+<line x1="271.6" y1="26.0" x2="271.6" y2="190.0" stroke="var(--ink)" stroke-width="1" />
+<text x="205.9" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">-6</text>
+<text x="238.8" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">-3</text>
+<text x="271.6" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">0</text>
+<text x="304.5" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">+3</text>
+<text x="337.3" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">+6</text>
+<line x1="257.2" y1="40.0" x2="288.8" y2="40.0" stroke="#8A6420" stroke-width="1.2" />
+<circle cx="273.0" cy="40.0" r="4" fill="var(--paper)" stroke="#8A6420" stroke-width="1.6"/>
+<line x1="242.9" y1="60.0" x2="272.9" y2="60.0" stroke="#C9A66B" stroke-width="1.2" />
+<circle cx="257.9" cy="60.0" r="4" fill="var(--paper)" stroke="#C9A66B" stroke-width="1.6"/>
+<line x1="185.5" y1="80.0" x2="225.9" y2="80.0" stroke="#7B2D3A" stroke-width="1.2" />
+<circle cx="205.7" cy="80.0" r="4" fill="#7B2D3A" stroke="#7B2D3A" stroke-width="1.6"/>
+<text x="230.9" y="84.0" text-anchor="start" fill="#B23A3A" font-size="11">-6.0</text>
+<line x1="256.7" y1="100.0" x2="283.7" y2="100.0" stroke="#8E6CC0" stroke-width="1.2" />
+<circle cx="270.2" cy="100.0" r="4" fill="var(--paper)" stroke="#8E6CC0" stroke-width="1.6"/>
+<line x1="290.5" y1="120.0" x2="326.9" y2="120.0" stroke="#5B3C8C" stroke-width="1.2" />
+<circle cx="308.6" cy="120.0" r="4" fill="#5B3C8C" stroke="#5B3C8C" stroke-width="1.6"/>
+<text x="331.9" y="124.0" text-anchor="start" fill="#2E7D4F" font-size="11">+3.4</text>
+<line x1="287.2" y1="140.0" x2="315.1" y2="140.0" stroke="#5F7A94" stroke-width="1.2" />
+<circle cx="301.2" cy="140.0" r="4" fill="#5F7A94" stroke="#5F7A94" stroke-width="1.6"/>
+<text x="320.1" y="144.0" text-anchor="start" fill="#2E7D4F" font-size="11">+2.7</text>
+<line x1="254.9" y1="160.0" x2="288.4" y2="160.0" stroke="#9AA1A8" stroke-width="1.2" />
+<circle cx="271.6" cy="160.0" r="4" fill="var(--paper)" stroke="#9AA1A8" stroke-width="1.6"/>
+<line x1="236.1" y1="180.0" x2="261.1" y2="180.0" stroke="#2B2B2B" stroke-width="1.2" />
+<circle cx="248.6" cy="180.0" r="4" fill="#2B2B2B" stroke="#2B2B2B" stroke-width="1.6"/>
+<text x="231.1" y="184.0" text-anchor="end" fill="#B23A3A" font-size="11">-2.1</text>
+<text x="434.0" y="12.0" text-anchor="middle" fill="var(--muted)" font-weight="600">Beyond model strength, pp</text>
+<line x1="445.0" y1="26.0" x2="445.0" y2="190.0" stroke="var(--ink)" stroke-width="1" />
+<text x="379.2" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">-6</text>
+<text x="412.1" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">-3</text>
+<text x="445.0" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">0</text>
+<text x="477.8" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">+3</text>
+<text x="510.7" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">+6</text>
+<line x1="445.1" y1="40.0" x2="476.7" y2="40.0" stroke="#8A6420" stroke-width="1.2" />
+<circle cx="460.9" cy="40.0" r="4" fill="var(--paper)" stroke="#8A6420" stroke-width="1.6"/>
+<line x1="416.6" y1="60.0" x2="446.7" y2="60.0" stroke="#C9A66B" stroke-width="1.2" />
+<circle cx="431.7" cy="60.0" r="4" fill="var(--paper)" stroke="#C9A66B" stroke-width="1.6"/>
+<line x1="401.1" y1="80.0" x2="441.4" y2="80.0" stroke="#7B2D3A" stroke-width="1.2" />
+<circle cx="421.3" cy="80.0" r="4" fill="var(--paper)" stroke="#7B2D3A" stroke-width="1.6"/>
+<line x1="434.7" y1="100.0" x2="461.6" y2="100.0" stroke="#8E6CC0" stroke-width="1.2" />
+<circle cx="448.1" cy="100.0" r="4" fill="var(--paper)" stroke="#8E6CC0" stroke-width="1.6"/>
+<line x1="446.4" y1="120.0" x2="482.8" y2="120.0" stroke="#5B3C8C" stroke-width="1.2" />
+<circle cx="464.7" cy="120.0" r="4" fill="var(--paper)" stroke="#5B3C8C" stroke-width="1.6"/>
+<line x1="438.9" y1="140.0" x2="466.9" y2="140.0" stroke="#5F7A94" stroke-width="1.2" />
+<circle cx="452.9" cy="140.0" r="4" fill="var(--paper)" stroke="#5F7A94" stroke-width="1.6"/>
+<line x1="431.4" y1="160.0" x2="464.9" y2="160.0" stroke="#9AA1A8" stroke-width="1.2" />
+<circle cx="448.1" cy="160.0" r="4" fill="var(--paper)" stroke="#9AA1A8" stroke-width="1.6"/>
+<line x1="425.1" y1="180.0" x2="450.0" y2="180.0" stroke="#2B2B2B" stroke-width="1.2" />
+<circle cx="437.5" cy="180.0" r="4" fill="var(--paper)" stroke="#2B2B2B" stroke-width="1.6"/>
+<text x="607.3" y="12.0" text-anchor="middle" fill="var(--muted)" font-weight="600">Beyond model and quality, pp</text>
+<line x1="618.3" y1="26.0" x2="618.3" y2="190.0" stroke="var(--ink)" stroke-width="1" />
+<text x="552.6" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">-6</text>
+<text x="585.4" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">-3</text>
+<text x="618.3" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">0</text>
+<text x="651.1" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">+3</text>
+<text x="684.0" y="210.0" text-anchor="middle" fill="var(--muted)" font-size="11">+6</text>
+<line x1="619.4" y1="40.0" x2="651.0" y2="40.0" stroke="#8A6420" stroke-width="1.2" />
+<circle cx="635.3" cy="40.0" r="4" fill="var(--paper)" stroke="#8A6420" stroke-width="1.6"/>
+<line x1="589.6" y1="60.0" x2="619.6" y2="60.0" stroke="#C9A66B" stroke-width="1.2" />
+<circle cx="604.6" cy="60.0" r="4" fill="var(--paper)" stroke="#C9A66B" stroke-width="1.6"/>
+<line x1="578.0" y1="80.0" x2="618.3" y2="80.0" stroke="#7B2D3A" stroke-width="1.2" />
+<circle cx="598.1" cy="80.0" r="4" fill="var(--paper)" stroke="#7B2D3A" stroke-width="1.6"/>
+<line x1="608.2" y1="100.0" x2="635.3" y2="100.0" stroke="#8E6CC0" stroke-width="1.2" />
+<circle cx="621.8" cy="100.0" r="4" fill="var(--paper)" stroke="#8E6CC0" stroke-width="1.6"/>
+<line x1="626.1" y1="120.0" x2="662.5" y2="120.0" stroke="#5B3C8C" stroke-width="1.2" />
+<circle cx="644.4" cy="120.0" r="4" fill="#5B3C8C" stroke="#5B3C8C" stroke-width="1.6"/>
+<text x="667.5" y="124.0" text-anchor="start" fill="#2E7D4F" font-size="11">+2.4</text>
+<line x1="612.3" y1="140.0" x2="640.2" y2="140.0" stroke="#5F7A94" stroke-width="1.2" />
+<circle cx="626.3" cy="140.0" r="4" fill="var(--paper)" stroke="#5F7A94" stroke-width="1.6"/>
+<line x1="607.0" y1="160.0" x2="640.3" y2="160.0" stroke="#9AA1A8" stroke-width="1.2" />
+<circle cx="623.7" cy="160.0" r="4" fill="var(--paper)" stroke="#9AA1A8" stroke-width="1.6"/>
+<line x1="603.4" y1="180.0" x2="628.3" y2="180.0" stroke="#2B2B2B" stroke-width="1.2" />
+<circle cx="615.8" cy="180.0" r="4" fill="var(--paper)" stroke="#2B2B2B" stroke-width="1.6"/>
+<text x="170.0" y="44.0" text-anchor="end" fill="#8A6420" >Real photos</text>
+<text x="170.0" y="64.0" text-anchor="end" fill="#C9A66B" >Cream background</text>
+<text x="170.0" y="84.0" text-anchor="end" fill="#7B2D3A" >Serif headline</text>
+<text x="170.0" y="104.0" text-anchor="end" fill="#8E6CC0" >Violet accent</text>
+<text x="170.0" y="124.0" text-anchor="end" fill="#5B3C8C" >Purple-gradient style</text>
+<text x="170.0" y="144.0" text-anchor="end" fill="#5F7A94" >Dominant gradient</text>
+<text x="170.0" y="164.0" text-anchor="end" fill="#9AA1A8" >Minimal-clean style</text>
+<text x="170.0" y="184.0" text-anchor="end" fill="#2B2B2B" >Dark-minimal style</text>
+</svg>
+</figure>
+    <p class="cap">Numbers: green = up, red = down. Raw win rates moved (serif headline −6.0 pp [−7.9, −4.2], dominant gradient +2.7 [1.4, 4.0], purple-gradient style +3.4 [1.7, 5.1], all q&lt;.05), but once model strength is removed most changes vanish: the shift came from which models used the feature. Only the purple-gradient style still moves beyond model and quality (+2.4 pp [0.7, 4.0], q=.03), on thin Aug–Sep samples: direction undetermined. Serif headline −2.2 pp beyond model strength (p=.02, q=.09) is a trend, not a finding. Photos hold steady (+0.1 raw, +1.5 controlled, neither significant). Change in pp between Jan–Mar and Jul–Sep, 95% CI; filled = q&lt;.05 (BH over 33 tests), hollow otherwise. Not charted: oversized headline −2.9 pp raw and dark neon tech −1.8 pp raw (both q&lt;.05, not significant once model strength is removed). Monthly estimates are pooled by inverse variance; the CI of the difference treats months as independent (approximate).</p>
+  </section>
+  <section class="sec">
+    <h2>Core trend 3: supply, all pages</h2>
+    <p class="insight">Across all pages, models moved away from violet and big gradients toward cream backgrounds, real photos and serif headlines.</p>
+    <figure><svg viewBox="0 0 696 200" width="100%" role="img" aria-label="Core trend panel: supply_all" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<line x1="40.0" y1="178.0" x2="434.0" y2="178.0" stroke="var(--ink)" stroke-width="1" />
+<text x="34.0" y="182.0" text-anchor="end" fill="var(--muted)" >0%</text>
+<text x="34.0" y="125.3" text-anchor="end" fill="var(--muted)" >20%</text>
+<text x="34.0" y="68.7" text-anchor="end" fill="var(--muted)" >40%</text>
+<text x="34.0" y="12.0" text-anchor="end" fill="var(--muted)" >60%</text>
+<text x="40.0" y="196.0" text-anchor="middle" fill="var(--muted)" >Jan</text>
+<text x="89.2" y="196.0" text-anchor="middle" fill="var(--muted)" >Feb</text>
+<text x="138.5" y="196.0" text-anchor="middle" fill="var(--muted)" >Mar</text>
+<text x="187.8" y="196.0" text-anchor="middle" fill="var(--muted)" >Apr</text>
+<text x="237.0" y="196.0" text-anchor="middle" fill="var(--muted)" >May</text>
+<text x="286.2" y="196.0" text-anchor="middle" fill="var(--muted)" >Jun</text>
+<text x="335.5" y="196.0" text-anchor="middle" fill="var(--muted)" >Jul</text>
+<text x="384.8" y="196.0" text-anchor="middle" fill="var(--muted)" >Aug</text>
+<text x="434.0" y="196.0" text-anchor="middle" fill="var(--muted)" >Sep</text>
+<polyline points="40.0,119.9 89.2,109.6 138.5,109.9 187.8,107.1 237.0,94.2 286.2,111.4 335.5,100.0 384.8,87.2 434.0,75.9" fill="none" stroke="#8A6420" stroke-width="1.8" />
+<text x="444.0" y="91.5" text-anchor="start" fill="#8A6420" >Real photos 32% <tspan fill="#2E7D4F">(+9 pp)</tspan></text>
+<polyline points="40.0,136.3 89.2,128.2 138.5,134.8 187.8,126.5 237.0,123.4 286.2,117.5 335.5,107.5 384.8,81.2 434.0,73.5" fill="none" stroke="#C9A66B" stroke-width="1.8" />
+<text x="444.0" y="77.5" text-anchor="start" fill="#C9A66B" >Cream background 32% <tspan fill="#2E7D4F">(+16 pp)</tspan></text>
+<polyline points="40.0,148.9 89.2,140.3 138.5,141.3 187.8,132.9 237.0,124.0 286.2,124.0 335.5,117.4 384.8,104.1 434.0,101.6" fill="none" stroke="#7B2D3A" stroke-width="1.8" />
+<text x="444.0" y="105.6" text-anchor="start" fill="#7B2D3A" >Serif headline 25% <tspan fill="#2E7D4F">(+13 pp)</tspan></text>
+<polyline points="40.0,50.9 89.2,62.8 138.5,76.5 187.8,71.3 237.0,77.0 286.2,83.4 335.5,89.5 384.8,111.2 434.0,117.8" fill="none" stroke="#8E6CC0" stroke-width="1.8" stroke-dasharray="6 3"/>
+<text x="444.0" y="133.6" text-anchor="start" fill="#8E6CC0" >Violet accent 25% <tspan fill="#B23A3A">(-15 pp)</tspan></text>
+<polyline points="40.0,136.2 89.2,140.7 138.5,151.7 187.8,150.1 237.0,157.7 286.2,158.6 335.5,161.7 384.8,166.5 434.0,168.7" fill="none" stroke="#5B3C8C" stroke-width="1.8" />
+<text x="444.0" y="175.6" text-anchor="start" fill="#5B3C8C" >Purple-gradient style 4% <tspan fill="#B23A3A">(-8 pp)</tspan></text>
+<polyline points="40.0,102.9 89.2,103.6 138.5,117.3 187.8,115.5 237.0,124.8 286.2,125.6 335.5,129.7 384.8,139.9 434.0,142.8" fill="none" stroke="#5F7A94" stroke-width="1.8" />
+<text x="444.0" y="161.6" text-anchor="start" fill="#5F7A94" >Dominant gradient 14% <tspan fill="#B23A3A">(-10 pp)</tspan></text>
+<polyline points="40.0,154.6 89.2,154.7 138.5,157.7 187.8,155.1 237.0,154.1 286.2,154.0 335.5,147.9 384.8,138.0 434.0,137.0" fill="none" stroke="#9AA1A8" stroke-width="1.8" />
+<text x="444.0" y="147.6" text-anchor="start" fill="#9AA1A8" >Minimal-clean style 13% <tspan fill="#2E7D4F">(+5 pp)</tspan></text>
+<polyline points="40.0,115.5 89.2,116.2 138.5,101.8 187.8,102.6 237.0,100.9 286.2,101.7 335.5,110.5 384.8,113.7 434.0,113.4" fill="none" stroke="#2B2B2B" stroke-width="1.8" />
+<text x="444.0" y="119.6" text-anchor="start" fill="#2B2B2B" >Dark-minimal style 23% <tspan fill="#9A9184">(-0 pp)</tspan></text>
+</svg>
+</figure>
+    <p class="cap">Line-end value = Jul–Sep mean; in brackets, the change from the Jan–Mar mean (green = up, red = down, grey = no clear change: CI includes 0 or under 0.5 pp). Across all generated pages, violet accents went from 45% in Jan to 21% in Sep (quarter means −15.1 pp [−16.7, −13.5]), cream backgrounds from 15% to 37% (+16.1 [14.9, 17.4]) and the purple-gradient style from 15% to 3% (−8.0 [−8.8, −7.3]); all slopes q&lt;.001. Share of all render-OK pages per month (day-weighted); 95% CIs in text. September is partial.</p>
+  </section>
+
+  <footer><span>Styles Study taste report, observed until 2026-09-29</span><span>2 / 10</span></footer>
+</div>
+
+<!-- ================= PAGE 3 ================= -->
+<div class="page">
+  <section class="sec" style="margin-top:0;padding-top:0;border-top:0">
+    <h2>Core trend 4: what prompts ask for</h2>
+    <p class="insight">Users increasingly ask for specific looks, above all dark pages and editorial type.</p>
+    <figure><svg viewBox="0 0 696 200" width="100%" role="img" aria-label="Core trend panel: request" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<line x1="40.0" y1="178.0" x2="434.0" y2="178.0" stroke="var(--ink)" stroke-width="1" />
+<text x="34.0" y="182.0" text-anchor="end" fill="var(--muted)" >0%</text>
+<text x="34.0" y="125.3" text-anchor="end" fill="var(--muted)" >10%</text>
+<text x="34.0" y="68.7" text-anchor="end" fill="var(--muted)" >20%</text>
+<text x="34.0" y="12.0" text-anchor="end" fill="var(--muted)" >30%</text>
+<text x="40.0" y="196.0" text-anchor="middle" fill="var(--muted)" >Jan</text>
+<text x="89.2" y="196.0" text-anchor="middle" fill="var(--muted)" >Feb</text>
+<text x="138.5" y="196.0" text-anchor="middle" fill="var(--muted)" >Mar</text>
+<text x="187.8" y="196.0" text-anchor="middle" fill="var(--muted)" >Apr</text>
+<text x="237.0" y="196.0" text-anchor="middle" fill="var(--muted)" >May</text>
+<text x="286.2" y="196.0" text-anchor="middle" fill="var(--muted)" >Jun</text>
+<text x="335.5" y="196.0" text-anchor="middle" fill="var(--muted)" >Jul</text>
+<text x="384.8" y="196.0" text-anchor="middle" fill="var(--muted)" >Aug</text>
+<text x="434.0" y="196.0" text-anchor="middle" fill="var(--muted)" >Sep</text>
+<polyline points="40.0,164.4 89.2,165.4 138.5,157.9 187.8,158.8 237.0,134.3 286.2,145.4 335.5,146.7 384.8,150.0 434.0,142.1" fill="none" stroke="#8A6420" stroke-width="1.8" />
+<text x="444.0" y="173.0" text-anchor="start" fill="#8A6420" >Asks for photos 6% <tspan fill="#2E7D4F">(+3 pp)</tspan></text>
+<polyline points="40.0,160.1 89.2,162.1 138.5,161.1 187.8,154.1 237.0,148.6 286.2,154.4 335.5,149.8 384.8,139.6 434.0,127.7" fill="none" stroke="#C9A66B" stroke-width="1.8" />
+<text x="444.0" y="145.0" text-anchor="start" fill="#C9A66B" >Asks for cream 7% <tspan fill="#2E7D4F">(+4 pp)</tspan></text>
+<polyline points="40.0,168.3 89.2,172.4 138.5,173.1 187.8,167.4 237.0,160.4 286.2,159.4 335.5,157.3 384.8,120.8 434.0,127.0" fill="none" stroke="#7B2D3A" stroke-width="1.8" />
+<text x="444.0" y="131.0" text-anchor="start" fill="#7B2D3A" >Asks for serif 8% <tspan fill="#2E7D4F">(+6 pp)</tspan></text>
+<polyline points="40.0,164.7 89.2,165.3 138.5,152.0 187.8,156.4 237.0,147.3 286.2,145.8 335.5,152.5 384.8,158.2 434.0,155.6" fill="none" stroke="#8E6CC0" stroke-width="1.8" stroke-dasharray="6 3"/>
+<text x="444.0" y="187.0" text-anchor="start" fill="#8E6CC0" >Asks for purple 4% <tspan fill="#2E7D4F">(+1 pp)</tspan></text>
+<polyline points="40.0,166.5 89.2,167.3 138.5,164.1 187.8,160.6 237.0,156.4 286.2,158.7 335.5,150.7 384.8,126.3 434.0,135.3" fill="none" stroke="#5F7A94" stroke-width="1.8" />
+<text x="444.0" y="159.0" text-anchor="start" fill="#5F7A94" >Asks for gradients 7% <tspan fill="#2E7D4F">(+5 pp)</tspan></text>
+<polyline points="40.0,115.4 89.2,127.2 138.5,121.3 187.8,107.8 237.0,105.3 286.2,113.3 335.5,108.5 384.8,85.9 434.0,93.3" fill="none" stroke="#9AA1A8" stroke-width="1.8" />
+<text x="444.0" y="97.3" text-anchor="start" fill="#9AA1A8" >Asks for minimal 14% <tspan fill="#2E7D4F">(+4 pp)</tspan></text>
+<polyline points="40.0,114.4 89.2,116.1 138.5,54.0 187.8,80.7 237.0,51.2 286.2,54.3 335.5,61.8 384.8,64.4 434.0,45.2" fill="none" stroke="#2B2B2B" stroke-width="1.8" />
+<text x="444.0" y="49.2" text-anchor="start" fill="#2B2B2B" >Asks for dark 21% <tspan fill="#2E7D4F">(+7 pp)</tspan></text>
+</svg>
+</figure>
+    <p class="cap">Line-end value = Jul–Sep mean; in brackets, the change from the Jan–Mar mean (green = up, red = down, grey = no clear change: CI includes 0 or under 0.5 pp). Requests rose for dark pages (11% in Jan to 23% in Sep; quarter means +6.7 pp [4.1, 9.2]), serif or editorial type (+6.4 [5.8, 7.0]) and cream backgrounds (+3.9 [3.2, 4.6]); violet requests stayed low (+0.9 [0.1, 1.8]). Share of prompts (no edits, no pasted code) that make each request, parsed by an LLM; colours match the feature they correspond to; 95% CIs in text. Requests are broader than the features ("dark" covers any dark theme). The purple-gradient style has no separate request series; it shares the purple/indigo request.</p>
+  </section>
+  <section class="sec">
+    <h2>Core trend 5: supply once user-specified styles are removed</h2>
+    <p class="insight">The same shift appears when every user-requested style is removed, so it comes from the models' own defaults.</p>
+    <figure><svg viewBox="0 0 696 200" width="100%" role="img" aria-label="Core trend panel: supply_default" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<line x1="40.0" y1="178.0" x2="434.0" y2="178.0" stroke="var(--ink)" stroke-width="1" />
+<text x="34.0" y="182.0" text-anchor="end" fill="var(--muted)" >0%</text>
+<text x="34.0" y="125.3" text-anchor="end" fill="var(--muted)" >20%</text>
+<text x="34.0" y="68.7" text-anchor="end" fill="var(--muted)" >40%</text>
+<text x="34.0" y="12.0" text-anchor="end" fill="var(--muted)" >60%</text>
+<text x="40.0" y="196.0" text-anchor="middle" fill="var(--muted)" >Jan</text>
+<text x="89.2" y="196.0" text-anchor="middle" fill="var(--muted)" >Feb</text>
+<text x="138.5" y="196.0" text-anchor="middle" fill="var(--muted)" >Mar</text>
+<text x="187.8" y="196.0" text-anchor="middle" fill="var(--muted)" >Apr</text>
+<text x="237.0" y="196.0" text-anchor="middle" fill="var(--muted)" >May</text>
+<text x="286.2" y="196.0" text-anchor="middle" fill="var(--muted)" >Jun</text>
+<text x="335.5" y="196.0" text-anchor="middle" fill="var(--muted)" >Jul</text>
+<text x="384.8" y="196.0" text-anchor="middle" fill="var(--muted)" >Aug</text>
+<text x="434.0" y="196.0" text-anchor="middle" fill="var(--muted)" >Sep</text>
+<polyline points="40.0,124.7 89.2,115.4 138.5,118.8 187.8,113.5 237.0,100.6 286.2,123.9 335.5,107.5 384.8,106.9 434.0,91.3" fill="none" stroke="#8A6420" stroke-width="1.8" />
+<text x="444.0" y="101.9" text-anchor="start" fill="#8A6420" >Real photos 27% <tspan fill="#2E7D4F">(+6 pp)</tspan></text>
+<polyline points="40.0,144.5 89.2,136.9 138.5,142.4 187.8,136.1 237.0,129.9 286.2,127.6 335.5,114.9 384.8,94.7 434.0,83.9" fill="none" stroke="#C9A66B" stroke-width="1.8" />
+<text x="444.0" y="87.9" text-anchor="start" fill="#C9A66B" >Cream background 28% <tspan fill="#2E7D4F">(+15 pp)</tspan></text>
+<polyline points="40.0,156.3 89.2,146.6 138.5,145.7 187.8,142.7 237.0,136.2 286.2,141.5 335.5,130.2 384.8,119.5 434.0,114.9" fill="none" stroke="#7B2D3A" stroke-width="1.8" />
+<text x="444.0" y="143.9" text-anchor="start" fill="#7B2D3A" >Serif headline 20% <tspan fill="#2E7D4F">(+10 pp)</tspan></text>
+<polyline points="40.0,30.6 89.2,43.4 138.5,53.8 187.8,46.3 237.0,51.7 286.2,56.1 335.5,70.3 384.8,93.5 434.0,100.8" fill="none" stroke="#8E6CC0" stroke-width="1.8" stroke-dasharray="6 3"/>
+<text x="444.0" y="115.9" text-anchor="start" fill="#8E6CC0" >Violet accent 32% <tspan fill="#B23A3A">(-16 pp)</tspan></text>
+<polyline points="40.0,124.7 89.2,132.2 138.5,140.1 187.8,140.0 237.0,149.1 286.2,151.6 335.5,156.1 384.8,163.5 434.0,167.9" fill="none" stroke="#5B3C8C" stroke-width="1.8" />
+<text x="444.0" y="185.9" text-anchor="start" fill="#5B3C8C" >Purple-gradient style 6% <tspan fill="#B23A3A">(-11 pp)</tspan></text>
+<polyline points="40.0,88.9 89.2,92.3 138.5,101.6 187.8,101.3 237.0,113.2 286.2,116.2 335.5,120.8 384.8,136.6 434.0,135.0" fill="none" stroke="#5F7A94" stroke-width="1.8" />
+<text x="444.0" y="157.9" text-anchor="start" fill="#5F7A94" >Dominant gradient 17% <tspan fill="#B23A3A">(-13 pp)</tspan></text>
+<polyline points="40.0,160.5 89.2,160.0 138.5,158.1 187.8,161.6 237.0,159.1 286.2,160.5 335.5,152.2 384.8,146.0 434.0,145.3" fill="none" stroke="#9AA1A8" stroke-width="1.8" />
+<text x="444.0" y="171.9" text-anchor="start" fill="#9AA1A8" >Minimal-clean style 11% <tspan fill="#2E7D4F">(+4 pp)</tspan></text>
+<polyline points="40.0,118.2 89.2,116.9 138.5,110.1 187.8,101.1 237.0,101.5 286.2,96.8 335.5,108.8 384.8,114.2 434.0,111.8" fill="none" stroke="#2B2B2B" stroke-width="1.8" />
+<text x="444.0" y="129.9" text-anchor="start" fill="#2B2B2B" >Dark-minimal style 23% <tspan fill="#9A9184">(+1 pp)</tspan></text>
+</svg>
+</figure>
+    <p class="cap">Line-end value = Jul–Sep mean; in brackets, the change from the Jan–Mar mean (green = up, red = down, grey = no clear change: CI includes 0 or under 0.5 pp). With user-specified styles removed, violet accents went from 52% in Jan to 27% in Sep (quarter means −16.1 pp [−18.0, −14.1], slope q&lt;10⁻⁷⁷); a chained decomposition puts 98% of the Jan-to-Sep fall on new models replacing old ones. Default supply = pages whose prompt named no style, tone or colour, excluding edits and pasted code (88,334 pages); 95% CIs in text; full-page series correlate 0.78–1.00. Cream is the exception: about a third of its Jan-to-Sep rise happened within models. All pages understate the purple-gradient exit: quarter means −8.0 pp all pages vs −10.6 [−11.7, −9.6] default.</p>
+  </section>
+
+  <footer><span>Styles Study taste report, observed until 2026-09-29</span><span>3 / 10</span></footer>
+</div>
+
+<!-- ================= PAGE 4 ================= -->
+<div class="page">
+  <section class="sec" style="margin-top:0;padding-top:0;border-top:0">
+    <h2>What changed most in supply and requests (Jan–Mar to Jul–Sep)</h2>
+    <p class="insight">Models moved away from violet gradients and system fonts toward cream backgrounds, warm accents, serif headlines and stat strips; users asked for more named styles too, but far less than models changed.</p>
+    <figure><svg viewBox="0 0 696 210" width="100%" role="img" aria-label="Biggest supply and request changes, Jan-Mar to Jul-Sep" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<text x="0.0" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">All pages</text>
+<line x1="164.6" y1="22.0" x2="164.6" y2="186.0" stroke="var(--ink)" stroke-width="1" />
+<text x="116.8" y="204.0" text-anchor="middle" fill="var(--muted)" font-size="11">-20</text>
+<text x="164.6" y="204.0" text-anchor="middle" fill="var(--muted)" font-size="11">0</text>
+<text x="212.4" y="204.0" text-anchor="middle" fill="var(--muted)" font-size="11">+20</text>
+<text x="106.0" y="40.0" text-anchor="end" fill="var(--ink)" font-size="11">Stats strip</text>
+<rect x="164.6" y="31.0" width="52.8" height="11" fill="#B08D57"/>
+<text x="221.5" y="40.0" text-anchor="start" fill="#2E7D4F" font-size="11">+22</text>
+<text x="106.0" y="60.0" text-anchor="end" fill="var(--ink)" font-size="11">Cream background</text>
+<rect x="164.6" y="51.0" width="38.5" height="11" fill="#C9A66B"/>
+<text x="207.1" y="60.0" text-anchor="start" fill="#2E7D4F" font-size="11">+16</text>
+<text x="106.0" y="80.0" text-anchor="end" fill="var(--ink)" font-size="11">Warm accent</text>
+<rect x="164.6" y="71.0" width="34.9" height="11" fill="#C27A3A"/>
+<text x="203.5" y="80.0" text-anchor="start" fill="#2E7D4F" font-size="11">+15</text>
+<text x="106.0" y="100.0" text-anchor="end" fill="var(--ink)" font-size="11">Serif headline</text>
+<rect x="164.6" y="91.0" width="30.1" height="11" fill="#7B2D3A"/>
+<text x="198.7" y="100.0" text-anchor="start" fill="#2E7D4F" font-size="11">+13</text>
+<text x="106.0" y="120.0" text-anchor="end" fill="var(--ink)" font-size="11">Dominant gradient</text>
+<rect x="139.7" y="111.0" width="24.9" height="11" fill="#5F7A94"/>
+<text x="135.7" y="120.0" text-anchor="end" fill="#B23A3A" font-size="11">-10</text>
+<text x="106.0" y="140.0" text-anchor="end" fill="var(--ink)" font-size="11">Violet accent</text>
+<rect x="128.5" y="131.0" width="36.1" height="11" fill="#8E6CC0"/>
+<text x="124.5" y="140.0" text-anchor="end" fill="#B23A3A" font-size="11">-15</text>
+<text x="106.0" y="160.0" text-anchor="end" fill="var(--ink)" font-size="11">Purple gradient CSS</text>
+<rect x="124.4" y="151.0" width="40.2" height="11" fill="#5B3C8C"/>
+<text x="120.4" y="160.0" text-anchor="end" fill="#B23A3A" font-size="11">-17</text>
+<text x="106.0" y="180.0" text-anchor="end" fill="var(--ink)" font-size="11">System-font H1</text>
+<rect x="119.4" y="171.0" width="45.2" height="11" fill="#6E7378"/>
+<text x="115.4" y="180.0" text-anchor="end" fill="#B23A3A" font-size="11">-19</text>
+<text x="232.0" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">Default pages</text>
+<line x1="396.6" y1="22.0" x2="396.6" y2="186.0" stroke="var(--ink)" stroke-width="1" />
+<text x="348.8" y="204.0" text-anchor="middle" fill="var(--muted)" font-size="11">-20</text>
+<text x="396.6" y="204.0" text-anchor="middle" fill="var(--muted)" font-size="11">0</text>
+<text x="444.4" y="204.0" text-anchor="middle" fill="var(--muted)" font-size="11">+20</text>
+<text x="338.0" y="40.0" text-anchor="end" fill="var(--ink)" font-size="11">Stats strip</text>
+<rect x="396.6" y="31.0" width="51.4" height="11" fill="#B08D57"/>
+<text x="452.0" y="40.0" text-anchor="start" fill="#2E7D4F" font-size="11">+22</text>
+<text x="338.0" y="60.0" text-anchor="end" fill="var(--ink)" font-size="11">Cream background</text>
+<rect x="396.6" y="51.0" width="36.6" height="11" fill="#C9A66B"/>
+<text x="437.2" y="60.0" text-anchor="start" fill="#2E7D4F" font-size="11">+15</text>
+<text x="338.0" y="80.0" text-anchor="end" fill="var(--ink)" font-size="11">Warm accent</text>
+<rect x="396.6" y="71.0" width="32.0" height="11" fill="#C27A3A"/>
+<text x="432.7" y="80.0" text-anchor="start" fill="#2E7D4F" font-size="11">+13</text>
+<text x="338.0" y="100.0" text-anchor="end" fill="var(--ink)" font-size="11">Light template</text>
+<rect x="370.1" y="91.0" width="26.5" height="11" fill="#B4B9BE"/>
+<text x="366.1" y="100.0" text-anchor="end" fill="#B23A3A" font-size="11">-11</text>
+<text x="338.0" y="120.0" text-anchor="end" fill="var(--ink)" font-size="11">Dominant gradient</text>
+<rect x="365.8" y="111.0" width="30.8" height="11" fill="#5F7A94"/>
+<text x="361.8" y="120.0" text-anchor="end" fill="#B23A3A" font-size="11">-13</text>
+<text x="338.0" y="140.0" text-anchor="end" fill="var(--ink)" font-size="11">Violet accent</text>
+<rect x="358.1" y="131.0" width="38.5" height="11" fill="#8E6CC0"/>
+<text x="354.1" y="140.0" text-anchor="end" fill="#B23A3A" font-size="11">-16</text>
+<text x="338.0" y="160.0" text-anchor="end" fill="var(--ink)" font-size="11">Purple gradient CSS</text>
+<rect x="356.7" y="151.0" width="39.9" height="11" fill="#5B3C8C"/>
+<text x="352.7" y="160.0" text-anchor="end" fill="#B23A3A" font-size="11">-17</text>
+<text x="338.0" y="180.0" text-anchor="end" fill="var(--ink)" font-size="11">System-font H1</text>
+<rect x="348.5" y="171.0" width="48.1" height="11" fill="#6E7378"/>
+<text x="344.5" y="180.0" text-anchor="end" fill="#B23A3A" font-size="11">-20</text>
+<text x="464.0" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">Asked for in prompts</text>
+<line x1="628.6" y1="22.0" x2="628.6" y2="186.0" stroke="var(--ink)" stroke-width="1" />
+<text x="580.8" y="204.0" text-anchor="middle" fill="var(--muted)" font-size="11">-20</text>
+<text x="628.6" y="204.0" text-anchor="middle" fill="var(--muted)" font-size="11">0</text>
+<text x="676.4" y="204.0" text-anchor="middle" fill="var(--muted)" font-size="11">+20</text>
+<text x="570.0" y="40.0" text-anchor="end" fill="var(--ink)" font-size="11">Generic "modern"</text>
+<rect x="628.6" y="31.0" width="34.2" height="11" fill="#8A8F94"/>
+<text x="666.8" y="40.0" text-anchor="start" fill="#2E7D4F" font-size="11">+14</text>
+<text x="570.0" y="60.0" text-anchor="end" fill="var(--ink)" font-size="11">Luxury</text>
+<rect x="628.6" y="51.0" width="20.1" height="11" fill="#A9853F"/>
+<text x="652.7" y="60.0" text-anchor="start" fill="#2E7D4F" font-size="11">+8</text>
+<text x="570.0" y="80.0" text-anchor="end" fill="var(--ink)" font-size="11">Dark</text>
+<rect x="628.6" y="71.0" width="16.0" height="11" fill="#2B2B2B"/>
+<text x="648.6" y="80.0" text-anchor="start" fill="#2E7D4F" font-size="11">+7</text>
+<text x="570.0" y="100.0" text-anchor="end" fill="var(--ink)" font-size="11">Warm accent</text>
+<rect x="628.6" y="91.0" width="15.3" height="11" fill="#C27A3A"/>
+<text x="647.9" y="100.0" text-anchor="start" fill="#2E7D4F" font-size="11">+6</text>
+<text x="570.0" y="120.0" text-anchor="end" fill="var(--ink)" font-size="11">Serif / editorial</text>
+<rect x="628.6" y="111.0" width="15.3" height="11" fill="#7B2D3A"/>
+<text x="647.9" y="120.0" text-anchor="start" fill="#2E7D4F" font-size="11">+6</text>
+<text x="570.0" y="140.0" text-anchor="end" fill="var(--ink)" font-size="11">Light</text>
+<rect x="628.6" y="131.0" width="13.9" height="11" fill="#C8C2B6"/>
+<text x="646.5" y="140.0" text-anchor="start" fill="#2E7D4F" font-size="11">+6</text>
+<text x="570.0" y="160.0" text-anchor="end" fill="var(--ink)" font-size="11">Gradient</text>
+<rect x="628.6" y="151.0" width="12.0" height="11" fill="#5F7A94"/>
+<text x="644.6" y="160.0" text-anchor="start" fill="#2E7D4F" font-size="11">+5</text>
+<text x="570.0" y="180.0" text-anchor="end" fill="var(--ink)" font-size="11">Glass</text>
+<rect x="628.6" y="171.0" width="11.7" height="11" fill="#7FA3B8"/>
+<text x="644.3" y="180.0" text-anchor="start" fill="#2E7D4F" font-size="11">+5</text>
+</svg>
+</figure>
+    <p class="cap">Default pages: system-font headline 25% to 5% (−20 pp), purple-gradient CSS 64% to 47% (−17), violet accent 48% to 32% (−16), dominant gradient 30% to 17% (−13); cream background 13% to 28% (+15), warm accent 19% to 32% (+13), stats strip 43% to 64% (+22). Requests: generic "modern/premium" 27% to 41% (+14), luxury 9% to 17% (+8), serif/editorial 1% to 8% (+6). Eight largest changes per column; bars in each feature's colour, numbers green = up, red = down, grey = no clear change. Monthly shares averaged by quarter; CIs approximate (all shown changes exclude 0).</p>
+  </section>
+  <section class="sec">
+    <h2>What decides a vote</h2>
+    <p class="insight">Which model drew the page matters most; between pages from one provider, a page that works and looks finished beats a page that merely picks a good style.</p>
+    <figure><svg viewBox="0 0 696 242" width="100%" role="img" aria-label="Share of the predictable signal by block" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<text x="341.8" y="12.0" text-anchor="start" fill="var(--accent)" font-weight="600">All votes</text>
+<text x="413.8" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">Same provider only</text>
+<text x="200.0" y="39.0" text-anchor="end" fill="var(--ink)" >Which model drew the page</text>
+<rect x="337.8" y="26.0" width="219.1" height="10" fill="var(--accent)"/>
+<line x1="539.2" y1="31.0" x2="575.5" y2="31.0" stroke="var(--ink)" stroke-width="1" />
+<text x="581.5" y="35.0" text-anchor="start" fill="var(--ink)" font-size="11">51%</text>
+<rect x="337.8" y="39.0" width="199.8" height="10" fill="var(--faint)"/>
+<line x1="457.7" y1="44.0" x2="617.1" y2="44.0" stroke="var(--ink)" stroke-width="1" />
+<text x="623.1" y="48.0" text-anchor="start" fill="var(--muted)" font-size="11">47%</text>
+<text x="200.0" y="79.0" text-anchor="end" fill="var(--ink)" >Render failure</text>
+<rect x="337.8" y="66.0" width="30.0" height="10" fill="var(--accent)"/>
+<line x1="362.3" y1="71.0" x2="372.9" y2="71.0" stroke="var(--ink)" stroke-width="1" />
+<text x="378.9" y="75.0" text-anchor="start" fill="var(--ink)" font-size="11">7%</text>
+<rect x="337.8" y="79.0" width="50.3" height="10" fill="var(--faint)"/>
+<line x1="364.9" y1="84.0" x2="424.5" y2="84.0" stroke="var(--ink)" stroke-width="1" />
+<text x="430.5" y="88.0" text-anchor="start" fill="var(--muted)" font-size="11">12%</text>
+<text x="200.0" y="119.0" text-anchor="end" fill="var(--ink)" >Quality score</text>
+<rect x="337.8" y="106.0" width="68.6" height="10" fill="var(--accent)"/>
+<line x1="397.0" y1="111.0" x2="417.4" y2="111.0" stroke="var(--ink)" stroke-width="1" />
+<text x="423.4" y="115.0" text-anchor="start" fill="var(--ink)" font-size="11">16%</text>
+<rect x="337.8" y="119.0" width="121.4" height="10" fill="var(--faint)"/>
+<line x1="417.0" y1="124.0" x2="527.1" y2="124.0" stroke="var(--ink)" stroke-width="1" />
+<text x="533.1" y="128.0" text-anchor="start" fill="var(--muted)" font-size="11">28%</text>
+<text x="200.0" y="159.0" text-anchor="end" fill="var(--ink)" >Style family</text>
+<rect x="337.8" y="146.0" width="29.9" height="10" fill="var(--accent)"/>
+<line x1="361.7" y1="151.0" x2="374.7" y2="151.0" stroke="var(--ink)" stroke-width="1" />
+<text x="380.7" y="155.0" text-anchor="start" fill="var(--ink)" font-size="11">7%</text>
+<rect x="337.8" y="159.0" width="39.4" height="10" fill="var(--faint)"/>
+<line x1="349.0" y1="164.0" x2="409.8" y2="164.0" stroke="var(--ink)" stroke-width="1" />
+<text x="415.8" y="168.0" text-anchor="start" fill="var(--muted)" font-size="11">9%</text>
+<text x="200.0" y="199.0" text-anchor="end" fill="var(--ink)" >Design attributes</text>
+<rect x="337.8" y="186.0" width="78.4" height="10" fill="var(--accent)"/>
+<line x1="404.2" y1="191.0" x2="429.6" y2="191.0" stroke="var(--ink)" stroke-width="1" />
+<text x="435.6" y="195.0" text-anchor="start" fill="var(--ink)" font-size="11">18%</text>
+<rect x="337.8" y="199.0" width="15.0" height="10" fill="var(--faint)"/>
+<line x1="250.8" y1="204.0" x2="414.9" y2="204.0" stroke="var(--ink)" stroke-width="1" />
+<text x="420.9" y="208.0" text-anchor="start" fill="var(--muted)" font-size="11">4%</text>
+<line x1="337.8" y1="18.0" x2="337.8" y2="222.0" stroke="var(--ink)" stroke-width="1" />
+<text x="252.6" y="238.0" text-anchor="middle" fill="var(--muted)" >-20%</text>
+<text x="337.8" y="238.0" text-anchor="middle" fill="var(--muted)" >0</text>
+<text x="423.0" y="238.0" text-anchor="middle" fill="var(--muted)" >+20%</text>
+<text x="508.2" y="238.0" text-anchor="middle" fill="var(--muted)" >+40%</text>
+<text x="593.4" y="238.0" text-anchor="middle" fill="var(--muted)" >+60%</text>
+</svg>
+</figure>
+    <p class="cap">Which model drew the page carries half of the predictable signal, 51% [47, 56]; between pages from one provider, render and quality outweigh style about 3 to 1. Shapley share of held-out log-loss gain, user-bootstrap 95% CI; 35,468 test votes (all), 4,365 (same provider). Only 59.6% of held-out votes are predictable at all (AUC 0.636). In September, past model strength is no better than chance (accuracy 50.9%) while page features still help.</p>
+  </section>
+
+  <footer><span>Styles Study taste report, observed until 2026-09-29</span><span>4 / 10</span></footer>
+</div>
+
+<!-- ================= PAGE 5 ================= -->
+<div class="page">
+  <section class="sec" style="margin-top:0;padding-top:0;border-top:0">
+    <h2>What wins at equal quality</h2>
+    <p class="insight">At the same quality, real imagery, a complete page skeleton and a deliberate headline font win; empty space and system fonts lose.</p>
+    <figure><svg viewBox="0 0 696 234" width="100%" role="img" aria-label="Attribute effects at equal observed quality" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<text x="288.0" y="18.5" text-anchor="end" fill="var(--ink)" >Full-bleed photo hero (vs centered)</text>
+<line x1="575.0" y1="14.5" x2="641.8" y2="14.5" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="608.5" cy="14.5" r="4" fill="var(--paper)" stroke="var(--pos)" stroke-width="1.6"/>
+<text x="649.8" y="18.5" text-anchor="start" fill="var(--pos)" font-size="11">+5.6</text>
+<text x="288.0" y="35.5" text-anchor="end" fill="var(--ink)" >Real photos (vs icons)</text>
+<line x1="546.6" y1="31.5" x2="589.9" y2="31.5" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="568.3" cy="31.5" r="4" fill="var(--pos)" stroke="var(--pos)" stroke-width="1.6"/>
+<text x="597.9" y="35.5" text-anchor="start" fill="var(--pos)" font-size="11">+4.4</text>
+<text x="288.0" y="52.5" text-anchor="end" fill="var(--ink)" >H1 in Playfair (vs Inter)</text>
+<line x1="454.2" y1="48.5" x2="513.6" y2="48.5" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="484.0" cy="48.5" r="4" fill="var(--paper)" stroke="var(--pos)" stroke-width="1.6"/>
+<text x="521.6" y="52.5" text-anchor="start" fill="var(--pos)" font-size="11">+1.7</text>
+<text x="288.0" y="69.5" text-anchor="end" fill="var(--ink)" >H1 in Space Grotesk (vs Inter)</text>
+<line x1="446.6" y1="65.5" x2="507.5" y2="65.5" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="477.1" cy="65.5" r="4" fill="var(--paper)" stroke="var(--pos)" stroke-width="1.6"/>
+<text x="515.5" y="69.5" text-anchor="start" fill="var(--pos)" font-size="11">+1.5</text>
+<text x="288.0" y="86.5" text-anchor="end" fill="var(--ink)" >Icon feature cards</text>
+<line x1="457.1" y1="82.5" x2="491.1" y2="82.5" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="474.1" cy="82.5" r="4" fill="var(--pos)" stroke="var(--pos)" stroke-width="1.6"/>
+<text x="499.1" y="86.5" text-anchor="start" fill="var(--pos)" font-size="11">+1.4</text>
+<text x="288.0" y="103.5" text-anchor="end" fill="var(--ink)" >Dominant gradient (vs subtle)</text>
+<line x1="386.7" y1="99.5" x2="422.6" y2="99.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="404.6" cy="99.5" r="4" fill="var(--neg)" stroke="var(--neg)" stroke-width="1.6"/>
+<text x="378.7" y="103.5" text-anchor="end" fill="var(--neg)" font-size="11">-0.7</text>
+<text x="288.0" y="120.5" text-anchor="end" fill="var(--ink)" >Minimal nav (vs full nav)</text>
+<line x1="377.3" y1="116.5" x2="411.2" y2="116.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="394.3" cy="116.5" r="4" fill="var(--neg)" stroke="var(--neg)" stroke-width="1.6"/>
+<text x="369.3" y="120.5" text-anchor="end" fill="var(--neg)" font-size="11">-1.1</text>
+<text x="288.0" y="137.5" text-anchor="end" fill="var(--ink)" >H1 left on system ui-sans</text>
+<line x1="346.3" y1="133.5" x2="407.4" y2="133.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="376.8" cy="133.5" r="4" fill="var(--paper)" stroke="var(--neg)" stroke-width="1.6"/>
+<text x="338.3" y="137.5" text-anchor="end" fill="var(--neg)" font-size="11">-1.6</text>
+<text x="288.0" y="154.5" text-anchor="end" fill="var(--ink)" >Normal-size headline (vs large)</text>
+<line x1="353.1" y1="150.5" x2="397.3" y2="150.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="375.2" cy="150.5" r="4" fill="var(--paper)" stroke="var(--neg)" stroke-width="1.6"/>
+<text x="345.1" y="154.5" text-anchor="end" fill="var(--neg)" font-size="11">-1.7</text>
+<text x="288.0" y="171.5" text-anchor="end" fill="var(--ink)" >No primary button (vs solid)</text>
+<line x1="335.6" y1="167.5" x2="402.7" y2="167.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="369.1" cy="167.5" r="4" fill="var(--paper)" stroke="var(--neg)" stroke-width="1.6"/>
+<text x="327.6" y="171.5" text-anchor="end" fill="var(--neg)" font-size="11">-1.8</text>
+<text x="288.0" y="188.5" text-anchor="end" fill="var(--ink)" >Generous whitespace (vs balanced)</text>
+<line x1="347.8" y1="184.5" x2="379.6" y2="184.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="363.7" cy="184.5" r="4" fill="var(--paper)" stroke="var(--neg)" stroke-width="1.6"/>
+<text x="339.8" y="188.5" text-anchor="end" fill="var(--neg)" font-size="11">-2.0</text>
+<text x="288.0" y="205.5" text-anchor="end" fill="var(--ink)" >No imagery (vs icons)</text>
+<line x1="320.2" y1="201.5" x2="371.0" y2="201.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="345.5" cy="201.5" r="4" fill="var(--neg)" stroke="var(--neg)" stroke-width="1.6"/>
+<text x="379.0" y="205.5" text-anchor="start" fill="var(--neg)" font-size="11">-2.6</text>
+<line x1="428.0" y1="6.0" x2="428.0" y2="210.0" stroke="var(--ink)" stroke-width="1" />
+<text x="300.0" y="230.0" text-anchor="middle" fill="var(--muted)" >-4 pp</text>
+<text x="364.0" y="230.0" text-anchor="middle" fill="var(--muted)" >-2 pp</text>
+<text x="428.0" y="230.0" text-anchor="middle" fill="var(--muted)" >0</text>
+<text x="492.0" y="230.0" text-anchor="middle" fill="var(--muted)" >+2 pp</text>
+<text x="556.0" y="230.0" text-anchor="middle" fill="var(--muted)" >+4 pp</text>
+<text x="620.0" y="230.0" text-anchor="middle" fill="var(--muted)" >+6 pp</text>
+</svg>
+</figure>
+    <p class="cap">Real photos beat icons by +4.4 pp [3.7, 5.1] (q=2×10⁻³⁴); generous whitespace and a system-font headline each lose about 2 pp. Win-probability difference (pp) with user-clustered 95% CI; model, quality and render controlled; 137–142k votes on prompts naming no style; labels name the reference. BH over 113 tests; none of 8 pre-declared combinations interacts (smallest q=.063). Filled dot = grade A (second labeler agrees, CI excludes 0); hollow = grade B.</p>
+  </section>
+  <section class="sec">
+    <h2>Beyond what the model's strength predicts</h2>
+    <p class="insight">Photo pages beat what their model's strength predicts, sparse minimal pages fall short, and dark styles are about neutral.</p>
+    <figure><svg viewBox="0 0 696 234" width="100%" role="img" aria-label="Actual minus model-expected win rate" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<text x="288.0" y="18.5" text-anchor="end" fill="var(--ink)" >Real photos (attribute)</text>
+<line x1="568.7" y1="14.5" x2="609.4" y2="14.5" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="588.4" cy="14.5" r="4" fill="var(--pos)"/>
+<text x="617.4" y="18.5" text-anchor="start" fill="var(--pos)" font-size="11">+4.2</text>
+<text x="288.0" y="35.5" text-anchor="end" fill="var(--ink)" >Luxury elegant (style)</text>
+<line x1="478.3" y1="31.5" x2="566.5" y2="31.5" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="523.5" cy="31.5" r="4" fill="var(--pos)"/>
+<text x="574.5" y="35.5" text-anchor="start" fill="var(--pos)" font-size="11">+2.3</text>
+<text x="288.0" y="52.5" text-anchor="end" fill="var(--ink)" >Editorial serif (style)</text>
+<line x1="442.2" y1="48.5" x2="520.6" y2="48.5" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="481.0" cy="48.5" r="4" fill="var(--pos)"/>
+<text x="528.6" y="52.5" text-anchor="start" fill="var(--pos)" font-size="11">+1.1</text>
+<text x="288.0" y="69.5" text-anchor="end" fill="var(--ink)" >Cream background (attribute)</text>
+<line x1="451.1" y1="65.5" x2="490.4" y2="65.5" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="470.3" cy="65.5" r="4" fill="var(--pos)"/>
+<text x="498.4" y="69.5" text-anchor="start" fill="var(--pos)" font-size="11">+0.8</text>
+<text x="288.0" y="86.5" text-anchor="end" fill="var(--ink)" >Dark neon tech (style)</text>
+<line x1="428.9" y1="82.5" x2="464.7" y2="82.5" stroke="var(--faint)" stroke-width="1.8" />
+<circle cx="447.2" cy="82.5" r="4" fill="var(--faint)"/>
+<text x="472.7" y="86.5" text-anchor="start" fill="var(--faint)" font-size="11">+0.2</text>
+<text x="288.0" y="103.5" text-anchor="end" fill="var(--ink)" >Dark minimal (style)</text>
+<line x1="422.4" y1="99.5" x2="453.7" y2="99.5" stroke="var(--faint)" stroke-width="1.8" />
+<circle cx="437.9" cy="99.5" r="4" fill="var(--faint)"/>
+<text x="414.4" y="103.5" text-anchor="end" fill="var(--faint)" font-size="11">-0.1</text>
+<text x="288.0" y="120.5" text-anchor="end" fill="var(--ink)" >Indigo/purple accent (attribute)</text>
+<line x1="404.1" y1="116.5" x2="439.0" y2="116.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="421.3" cy="116.5" r="4" fill="var(--neg)"/>
+<text x="396.1" y="120.5" text-anchor="end" fill="var(--neg)" font-size="11">-0.6</text>
+<text x="288.0" y="137.5" text-anchor="end" fill="var(--ink)" >Dominant gradient (attribute)</text>
+<line x1="395.7" y1="133.5" x2="431.3" y2="133.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="412.3" cy="133.5" r="4" fill="var(--neg)"/>
+<text x="387.7" y="137.5" text-anchor="end" fill="var(--neg)" font-size="11">-0.8</text>
+<text x="288.0" y="154.5" text-anchor="end" fill="var(--ink)" >Purple gradient (style)</text>
+<line x1="372.1" y1="150.5" x2="414.2" y2="150.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="393.4" cy="150.5" r="4" fill="var(--neg)"/>
+<text x="364.1" y="154.5" text-anchor="end" fill="var(--neg)" font-size="11">-1.3</text>
+<text x="288.0" y="171.5" text-anchor="end" fill="var(--ink)" >System font on H1 (attribute)</text>
+<line x1="361.3" y1="167.5" x2="402.7" y2="167.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="382.0" cy="167.5" r="4" fill="var(--neg)"/>
+<text x="353.3" y="171.5" text-anchor="end" fill="var(--neg)" font-size="11">-1.7</text>
+<text x="288.0" y="188.5" text-anchor="end" fill="var(--ink)" >Minimal clean (style)</text>
+<line x1="345.7" y1="184.5" x2="390.9" y2="184.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="367.3" cy="184.5" r="4" fill="var(--neg)"/>
+<text x="337.7" y="188.5" text-anchor="end" fill="var(--neg)" font-size="11">-2.1</text>
+<text x="288.0" y="205.5" text-anchor="end" fill="var(--ink)" >Generous whitespace (attribute)</text>
+<line x1="347.3" y1="201.5" x2="382.0" y2="201.5" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="364.6" cy="201.5" r="4" fill="var(--neg)"/>
+<text x="339.3" y="205.5" text-anchor="end" fill="var(--neg)" font-size="11">-2.2</text>
+<line x1="440.8" y1="6.0" x2="440.8" y2="210.0" stroke="var(--ink)" stroke-width="1" />
+<text x="300.0" y="230.0" text-anchor="middle" fill="var(--muted)" >-4 pp</text>
+<text x="370.4" y="230.0" text-anchor="middle" fill="var(--muted)" >-2 pp</text>
+<text x="440.8" y="230.0" text-anchor="middle" fill="var(--muted)" >0</text>
+<text x="511.2" y="230.0" text-anchor="middle" fill="var(--muted)" >+2 pp</text>
+<text x="581.6" y="230.0" text-anchor="middle" fill="var(--muted)" >+4 pp</text>
+<text x="652.0" y="230.0" text-anchor="middle" fill="var(--muted)" >+6 pp</text>
+</svg>
+</figure>
+    <p class="cap">Photo pages win 4.2 pp [3.6, 4.8] more than their models' strength predicts (q&lt;10⁻⁴⁴); minimal-clean falls 2.1 pp short; dark styles are roughly neutral once quality is counted. Actual minus expected win rate, expected from Bradley–Terry model strength plus quality; voter-cluster bootstrap 95% CI; BH over 63 tests. In-sample BT and Design Arena Elo baselines agree within 0.4 pp on attributes. As a family, editorial and luxury beat expectation by +2.5 pp [1.5, 3.6], q&lt;.001.</p>
+  </section>
+
+  <footer><span>Styles Study taste report, observed until 2026-09-29</span><span>5 / 10</span></footer>
+</div>
+
+<!-- ================= PAGE 6 ================= -->
+<div class="page">
+  <section class="sec" style="margin-top:0;padding-top:0;border-top:0">
+    <h2>Held-out check of the rules</h2>
+    <p class="insight">Rules picked from the first half of the year still pick the winners in the second half.</p>
+    <figure><svg viewBox="0 0 696 160" width="100%" role="img" aria-label="Held-out win rate by taste-score quintile" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<line x1="44.0" y1="65.0" x2="506.0" y2="65.0" stroke="var(--ink)" stroke-width="1" stroke-dasharray="2 3"/>
+<text x="38.0" y="69.0" text-anchor="end" fill="var(--muted)" >50%</text>
+<text x="38.0" y="124.0" text-anchor="end" fill="var(--muted)" >40%</text>
+<text x="38.0" y="14.0" text-anchor="end" fill="var(--muted)" >60%</text>
+<text x="44.0" y="138.0" text-anchor="middle" fill="var(--muted)" >Q1</text>
+<text x="159.5" y="138.0" text-anchor="middle" fill="var(--muted)" >Q2</text>
+<text x="275.0" y="138.0" text-anchor="middle" fill="var(--muted)" >Q3</text>
+<text x="390.5" y="138.0" text-anchor="middle" fill="var(--muted)" >Q4</text>
+<text x="506.0" y="138.0" text-anchor="middle" fill="var(--muted)" >Q5</text>
+<text x="44.0" y="154.0" text-anchor="start" fill="var(--muted)" >Page breaks more rules than its rival</text>
+<text x="506.0" y="154.0" text-anchor="end" fill="var(--muted)" >Page follows more rules</text>
+<polyline points="44.0,86.7 159.5,70.9 275.0,64.5 390.5,59.0 506.0,43.0" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="5 3"/>
+<polyline points="44.0,101.3 159.5,82.1 275.0,61.3 390.5,55.8 506.0,26.9" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+<line x1="44.0" y1="106.8" x2="44.0" y2="95.2" stroke="var(--accent)" stroke-width="1.4" />
+<circle cx="44.0" cy="101.3" r="4" fill="var(--accent)"/>
+<line x1="159.5" y1="87.5" x2="159.5" y2="76.3" stroke="var(--accent)" stroke-width="1.4" />
+<circle cx="159.5" cy="82.1" r="4" fill="var(--accent)"/>
+<line x1="275.0" y1="66.5" x2="275.0" y2="56.1" stroke="var(--accent)" stroke-width="1.4" />
+<circle cx="275.0" cy="61.3" r="4" fill="var(--accent)"/>
+<line x1="390.5" y1="61.2" x2="390.5" y2="50.2" stroke="var(--accent)" stroke-width="1.4" />
+<circle cx="390.5" cy="55.8" r="4" fill="var(--accent)"/>
+<line x1="506.0" y1="32.3" x2="506.0" y2="20.9" stroke="var(--accent)" stroke-width="1.4" />
+<circle cx="506.0" cy="26.9" r="4" fill="var(--accent)"/>
+<text x="516.0" y="30.9" text-anchor="start" fill="var(--accent)" font-weight="600">Actual 56.9%</text>
+<text x="516.0" y="61.0" text-anchor="start" fill="var(--muted)" >Expected from model 54.0%</text>
+</svg>
+</figure>
+    <p class="cap">Rules chosen on Jan–Jun votes alone separate Jul–Sep winners: top vs bottom quintile +13.5 pp [12.1, 15.1] (q=2×10⁻⁶⁶). Of that gap, +5.6 [3.9, 7.1] to +7.1 [5.6, 8.6] pp lies beyond model strength (equal or fitted weights). 9 of 19 candidate rules kept by BH on Jan–Jun; 45,231 held-out votes by quintile of the two sides' rule-count gap. Expected rate from model strength fitted on the held-out votes themselves, which favours the baseline.</p>
+  </section>
+  <section class="sec">
+    <h2>Does taste.md help?</h2>
+    <p class="insight">taste.md clearly changes what models build; as an aid for judging votes it helps only a little.</p>
+    <figure><svg viewBox="0 0 696 200" width="100%" role="img" aria-label="Does taste.md help: judge agreement and generated pages" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<text x="0.0" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">Judge agreement with human votes</text>
+<text x="320.0" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">Pages built with vs without taste.md</text>
+<text x="122.0" y="57.0" text-anchor="end" fill="var(--ink)" >Judge alone</text>
+<line x1="159.1" y1="53.0" x2="210.5" y2="53.0" stroke="var(--faint)" stroke-width="1.8" />
+<circle cx="185.1" cy="53.0" r="4.5" fill="var(--faint)"/>
+<text x="218.5" y="57.0" text-anchor="start" fill="var(--faint)" >54.0%</text>
+<text x="122.0" y="83.0" text-anchor="end" fill="var(--ink)" >Judge + taste.md</text>
+<line x1="179.2" y1="79.0" x2="230.5" y2="79.0" stroke="var(--accent)" stroke-width="1.8" />
+<circle cx="205.2" cy="79.0" r="4.5" fill="var(--accent)"/>
+<text x="238.5" y="83.0" text-anchor="start" fill="var(--accent)" >57.4%</text>
+<text x="122.0" y="109.0" text-anchor="end" fill="var(--ink)" >Stronger-model pick</text>
+<line x1="193.4" y1="105.0" x2="244.1" y2="105.0" stroke="var(--muted)" stroke-width="1.8" />
+<circle cx="219.3" cy="105.0" r="4.5" fill="var(--muted)"/>
+<text x="252.1" y="109.0" text-anchor="start" fill="var(--muted)" >59.8%</text>
+<line x1="161.5" y1="34.0" x2="161.5" y2="118.0" stroke="var(--ink)" stroke-width="1" stroke-dasharray="2 3"/>
+<text x="161.5" y="30.0" text-anchor="middle" fill="var(--muted)" font-size="11">chance</text>
+<text x="161.5" y="134.0" text-anchor="middle" fill="var(--muted)" >50%</text>
+<text x="220.5" y="134.0" text-anchor="middle" fill="var(--muted)" >60%</text>
+<text x="320.0" y="28.0" text-anchor="start" fill="var(--muted)" font-size="11">hollow = without taste.md, gold = with</text>
+<text x="460.0" y="57.0" text-anchor="end" fill="var(--ink)" >Judges prefer taste page</text>
+<line x1="551.7" y1="53.0" x2="568.8" y2="53.0" stroke="var(--accent)" stroke-width="1.8" />
+<circle cx="560.3" cy="53.0" r="4.5" fill="var(--accent)"/>
+<text x="576.8" y="57.0" text-anchor="start" fill="var(--accent)" font-weight="600">67.4%</text>
+<text x="460.0" y="83.0" text-anchor="end" fill="var(--ink)" >Real photos</text>
+<line x1="494.1" y1="79.0" x2="585.9" y2="79.0" stroke="var(--accent)" stroke-width="2.2" />
+<circle cx="494.1" cy="79.0" r="4" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.6"/>
+<circle cx="585.9" cy="79.0" r="4.5" fill="var(--accent)"/>
+<text x="593.9" y="83.0" text-anchor="start" fill="var(--accent)" >18% to 86%</text>
+<text x="460.0" y="109.0" text-anchor="end" fill="var(--ink)" >No purple gradient</text>
+<line x1="564.9" y1="105.0" x2="602.5" y2="105.0" stroke="var(--accent)" stroke-width="2.2" />
+<circle cx="564.9" cy="105.0" r="4" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.6"/>
+<circle cx="602.5" cy="105.0" r="4.5" fill="var(--accent)"/>
+<text x="610.5" y="109.0" text-anchor="start" fill="var(--accent)" >71% to 99%</text>
+<text x="460.0" y="135.0" text-anchor="end" fill="var(--ink)" >Non-system H1 font</text>
+<line x1="566.3" y1="131.0" x2="601.1" y2="131.0" stroke="var(--accent)" stroke-width="2.2" />
+<circle cx="566.3" cy="131.0" r="4" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.6"/>
+<circle cx="601.1" cy="131.0" r="4.5" fill="var(--accent)"/>
+<text x="609.1" y="135.0" text-anchor="start" fill="var(--accent)" >72% to 98%</text>
+<text x="460.0" y="161.0" text-anchor="end" fill="var(--ink)" >Has a nav bar</text>
+<line x1="572.4" y1="157.0" x2="587.4" y2="157.0" stroke="var(--accent)" stroke-width="2.2" />
+<circle cx="572.4" cy="157.0" r="4" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.6"/>
+<circle cx="587.4" cy="157.0" r="4.5" fill="var(--accent)"/>
+<text x="595.4" y="161.0" text-anchor="start" fill="var(--accent)" >76% to 88%</text>
+<line x1="537.0" y1="34.0" x2="537.0" y2="170.0" stroke="var(--ink)" stroke-width="1" stroke-dasharray="2 3"/>
+<text x="470.0" y="186.0" text-anchor="middle" fill="var(--muted)" >0%</text>
+<text x="537.0" y="186.0" text-anchor="middle" fill="var(--muted)" >50%</text>
+<text x="604.0" y="186.0" text-anchor="middle" fill="var(--muted)" >100%</text>
+</svg>
+</figure>
+    <p class="cap">taste.md changes what models build (with-taste pages preferred 67.4% [61.0, 73.7] by blind judges), but as a judging aid it adds at most a few points of agreement with human votes (+3.4 pp [−0.2, 7.0], p=.08). The judging gain comes from September only (+5.3 pp [0.7, 10.0], p=.04; Jun–Aug +0.5 pp, p=1.0). The rules were derived from data that includes September, so that gain may reflect leakage. Left: DeepSeek V4.1 Flash judging 500 real vote pairs, agreement with the human vote, Wilson 95% CI; paired change McNemar. Right: 30 real prompts × 3 models (GPT-6 Luna, Claude Haiku 5.5, DeepSeek V4.1 Flash), each page generated with and without taste.md; 267 blind pairwise verdicts by 3 model judges, prompt-cluster bootstrap. Judges are LLMs (about 56% agreement with human votes) and judge each pair once; compliance checks are HTML proxies.</p>
+  </section>
+
+  <footer><span>Styles Study taste report, observed until 2026-09-29</span><span>6 / 10</span></footer>
+</div>
+
+<!-- ================= PAGE 7 ================= -->
+<div class="page">
+  <section class="sec" style="margin-top:0;padding-top:0;border-top:0">
+    <h2>By angle: prompt detail</h2>
+    <p class="insight">Prompts get more specific over time, but a request for "minimal" is still no licence for an empty page.</p>
+    <figure><svg viewBox="0 0 696 200" width="100%" role="img" aria-label="Share of prompts making each request, by month" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<line x1="36.0" y1="176.0" x2="476.0" y2="176.0" stroke="var(--ink)" stroke-width="1" />
+<text x="30.0" y="180.0" text-anchor="end" fill="var(--muted)" >0%</text>
+<text x="30.0" y="124.7" text-anchor="end" fill="var(--muted)" >20%</text>
+<text x="30.0" y="69.3" text-anchor="end" fill="var(--muted)" >40%</text>
+<text x="30.0" y="14.0" text-anchor="end" fill="var(--muted)" >60%</text>
+<text x="36.0" y="194.0" text-anchor="middle" fill="var(--muted)" >Jan</text>
+<text x="91.0" y="194.0" text-anchor="middle" fill="var(--muted)" >Feb</text>
+<text x="146.0" y="194.0" text-anchor="middle" fill="var(--muted)" >Mar</text>
+<text x="201.0" y="194.0" text-anchor="middle" fill="var(--muted)" >Apr</text>
+<text x="256.0" y="194.0" text-anchor="middle" fill="var(--muted)" >May</text>
+<text x="311.0" y="194.0" text-anchor="middle" fill="var(--muted)" >Jun</text>
+<text x="366.0" y="194.0" text-anchor="middle" fill="var(--muted)" >Jul</text>
+<text x="421.0" y="194.0" text-anchor="middle" fill="var(--muted)" >Aug</text>
+<text x="476.0" y="194.0" text-anchor="middle" fill="var(--muted)" >Sep</text>
+<polyline points="36.0,80.8 91.0,101.5 146.0,77.9 201.0,72.6 256.0,63.2 311.0,57.5 366.0,58.0 421.0,44.2 476.0,35.6" fill="none" stroke="var(--ink)" stroke-width="2" />
+<text x="486.0" y="39.6" text-anchor="start" fill="var(--ink)" >Names a style  34% to 51%</text>
+<polyline points="36.0,141.9 91.0,145.1 146.0,127.3 201.0,124.5 256.0,104.4 311.0,105.5 366.0,102.5 421.0,101.1 476.0,89.1" fill="none" stroke="var(--accent)" stroke-width="2" />
+<text x="486.0" y="93.1" text-anchor="start" fill="var(--accent)" >Premium / luxury mood  12% to 31%</text>
+<polyline points="36.0,137.6 91.0,136.2 146.0,118.4 201.0,125.1 256.0,119.5 311.0,117.8 366.0,122.2 421.0,115.4 476.0,107.2" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 3"/>
+<text x="486.0" y="111.2" text-anchor="start" fill="var(--muted)" >Asks for photos  14% to 25%</text>
+<polyline points="36.0,152.0 91.0,156.3 146.0,134.6 201.0,142.3 256.0,128.8 311.0,132.9 366.0,137.7 421.0,140.7 476.0,139.3" fill="none" stroke="var(--faint)" stroke-width="2" />
+<text x="486.0" y="143.3" text-anchor="start" fill="var(--faint)" >Dark theme  9% to 13%</text>
+<polyline points="36.0,157.9 91.0,158.0 146.0,145.4 201.0,149.4 256.0,141.3 311.0,141.7 366.0,140.6 421.0,144.4 476.0,140.2" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 3"/>
+<text x="486.0" y="158.3" text-anchor="start" fill="var(--accent)" >Gold / brown accent  7% to 13%</text>
+<polyline points="36.0,168.3 91.0,170.1 146.0,160.6 201.0,164.1 256.0,161.6 311.0,160.7 366.0,161.2 421.0,161.9 476.0,158.6" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="1.5 2"/>
+<text x="486.0" y="173.3" text-anchor="start" fill="var(--muted)" >Serif type  3% to 6%</text>
+</svg>
+</figure>
+    <p class="cap">Prompts grew more specific (naming a style 34% in Jan to 51% in Sep; premium/luxury 12% to 31%), but asking for "minimal" does not license a sparse page: sparse pages still lose −4.2 pp [−6.2, −2.2], q=.0003. Decorative styles become the page's main look in only about a third of requests (glass 30.3% [29.3, 31.2], neobrutalism 35.0% [30.6, 39.5], luxury 35.4% [34.2, 36.6]). Default supply does not follow requests: violet requests rose slightly (quarter means +0.9 pp [0.1, 1.8]) while default violet supply fell (−16.1 [−18.0, −14.1]). Share of prompts per month (no edits, no pasted code; requests parsed by an LLM). Slopes: naming a style +2.42 pp/month [1.82, 3.02], premium/luxury +2.47 [2.07, 2.86]. Prompts also got longer, so rising requests do not by themselves mean shifting preferences. Sparse-page effect is actual minus model-expected win rate on prompts that asked for minimal (4,311 votes; same sign in both user halves and within quality bands).</p>
+  </section>
+  <section class="sec">
+    <h2>By angle: design-skill claims against votes</h2>
+    <p class="insight">Most patterns that design skills call AI tells are not penalized by voters.</p>
+    <figure><svg viewBox="0 0 696 220" width="100%" role="img" aria-label="Design-skill claims tested on votes" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<text x="0.0" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">Design-skill claim</text>
+<text x="230.0" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">Skills</text>
+<text x="486.4" y="12.0" text-anchor="middle" fill="var(--muted)" font-weight="600">Vote effect, pp</text>
+<text x="580.0" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">Claim is</text>
+<text x="0.0" y="37.0" text-anchor="start" fill="var(--ink)" >Purple gradient (CSS)</text>
+<text x="230.0" y="37.0" text-anchor="start" fill="var(--muted)" >avoid</text>
+<line x1="461.4" y1="33.0" x2="484.8" y2="33.0" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="473.1" cy="33.0" r="4" fill="var(--pos)"/>
+<text x="580.0" y="37.0" text-anchor="start" fill="var(--pos)" font-weight="600">Supported</text>
+<text x="0.0" y="59.0" text-anchor="start" fill="var(--ink)" >Neobrutalism, unrequested</text>
+<text x="230.0" y="59.0" text-anchor="start" fill="var(--muted)" >avoid</text>
+<line x1="303.4" y1="55.0" x2="451.4" y2="55.0" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="377.4" cy="55.0" r="4" fill="var(--pos)"/>
+<text x="580.0" y="59.0" text-anchor="start" fill="var(--pos)" font-weight="600">Supported</text>
+<text x="0.0" y="81.0" text-anchor="start" fill="var(--ink)" >Hard offset shadow</text>
+<text x="230.0" y="81.0" text-anchor="start" fill="var(--muted)" >avoid</text>
+<line x1="354.3" y1="77.0" x2="467.5" y2="77.0" stroke="var(--pos)" stroke-width="1.8" />
+<circle cx="410.9" cy="77.0" r="4" fill="var(--pos)"/>
+<text x="580.0" y="81.0" text-anchor="start" fill="var(--pos)" font-weight="600">Supported</text>
+<text x="0.0" y="103.0" text-anchor="start" fill="var(--ink)" >Template decorations, each</text>
+<text x="230.0" y="103.0" text-anchor="start" fill="var(--muted)" >avoid</text>
+<line x1="501.7" y1="99.0" x2="511.4" y2="99.0" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="506.6" cy="99.0" r="4" fill="var(--neg)"/>
+<text x="580.0" y="103.0" text-anchor="start" fill="var(--neg)" font-weight="600">Contradicted</text>
+<text x="0.0" y="125.0" text-anchor="start" fill="var(--ink)" >Dark background with glow</text>
+<text x="230.0" y="125.0" text-anchor="start" fill="var(--muted)" >avoid</text>
+<line x1="487.6" y1="121.0" x2="517.8" y2="121.0" stroke="var(--neg)" stroke-width="1.8" />
+<circle cx="502.7" cy="121.0" r="4" fill="var(--neg)"/>
+<text x="580.0" y="125.0" text-anchor="start" fill="var(--neg)" font-weight="600">Contradicted</text>
+<text x="0.0" y="147.0" text-anchor="start" fill="var(--ink)" >Cream background + serif H1</text>
+<text x="230.0" y="147.0" text-anchor="start" fill="var(--muted)" >avoid</text>
+<line x1="482.6" y1="143.0" x2="536.4" y2="143.0" stroke="var(--faint)" stroke-width="1.8" />
+<circle cx="509.5" cy="143.0" r="4" fill="var(--faint)"/>
+<text x="580.0" y="147.0" text-anchor="start" fill="var(--faint)" font-weight="600">Undetermined</text>
+<text x="0.0" y="169.0" text-anchor="start" fill="var(--ink)" >Bento grid (within SaaS)</text>
+<text x="230.0" y="169.0" text-anchor="start" fill="var(--muted)" >avoid</text>
+<line x1="464.7" y1="165.0" x2="547.3" y2="165.0" stroke="var(--faint)" stroke-width="1.8" />
+<circle cx="506.0" cy="165.0" r="4" fill="var(--faint)"/>
+<text x="580.0" y="169.0" text-anchor="start" fill="var(--faint)" font-weight="600">Undetermined</text>
+<text x="0.0" y="191.0" text-anchor="start" fill="var(--ink)" >Plus Jakarta Sans vs Inter</text>
+<text x="230.0" y="191.0" text-anchor="start" fill="var(--muted)" >use</text>
+<line x1="434.6" y1="187.0" x2="495.4" y2="187.0" stroke="var(--faint)" stroke-width="1.8" />
+<circle cx="465.0" cy="187.0" r="4" fill="var(--faint)"/>
+<text x="580.0" y="191.0" text-anchor="start" fill="var(--faint)" font-weight="600">Undetermined</text>
+<line x1="486.4" y1="22.0" x2="486.4" y2="198.0" stroke="var(--ink)" stroke-width="1" />
+<text x="290.0" y="216.0" text-anchor="middle" fill="var(--muted)" >-8</text>
+<text x="339.1" y="216.0" text-anchor="middle" fill="var(--muted)" >-6</text>
+<text x="388.2" y="216.0" text-anchor="middle" fill="var(--muted)" >-4</text>
+<text x="437.3" y="216.0" text-anchor="middle" fill="var(--muted)" >-2</text>
+<text x="486.4" y="216.0" text-anchor="middle" fill="var(--muted)" >0</text>
+<text x="535.5" y="216.0" text-anchor="middle" fill="var(--muted)" >+2</text>
+</svg>
+</figure>
+    <p class="cap">Most AI tells are not penalized: only purple gradients, unrequested neobrutalism and hard offset shadows are. Supported = effect in the claimed direction with CI excluding 0; Contradicted = opposite direction with CI excluding 0; otherwise Undetermined. Hard shadow rests on 2,232 votes. Template decorations add +0.82 pp each [0.63, 1.02], q&lt;10⁻¹³, fading to about 0 by Aug–Sep (exploratory). Claims from Anthropic frontend-design v1–v3, Impeccable, taste-skill, UI-UX Pro Max.</p>
+  </section>
+  <section class="sec">
+    <h2>By angle: execution beats selection</h2>
+    <p class="insight">The same style can help one provider and hurt another: how a style is executed matters more than which style is chosen.</p>
+    <table>
+      <thead><tr><th>Editorial serif pages, vs other providers' serif pages</th><th class="r">Votes</th><th class="r">β [95% CI]</th><th class="r">q</th></tr></thead>
+      <tbody>
+        <tr><td>Anthropic</td><td class="r">1,017</td><td class="r">+0.261 [0.104, 0.418]</td><td class="r">.011</td></tr>
+        <tr><td>DeepSeek</td><td class="r">291</td><td class="r">+0.311 [0.075, 0.547]</td><td class="r">.050</td></tr>
+        <tr><td>Zhipu (GLM)</td><td class="r">1,522</td><td class="r">−0.217 [−0.351, −0.084]</td><td class="r">.013</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer><span>Styles Study taste report, observed until 2026-09-29</span><span>7 / 10</span></footer>
+</div>
+
+<!-- ================= PAGE 8 ================= -->
+<div class="page">
+  <section class="sec" style="margin-top:0;padding-top:0;border-top:0">
+    <h2>By angle: detailed prompts</h2>
+    <p class="insight">The more a user specifies, the more page quality decides the vote; vague prompts do not reward design flair more. Unrequested serif headlines pay off mainly on long briefs.</p>
+    <figure><svg viewBox="0 0 696 138" width="100%" role="img" aria-label="Prompt specificity: quality gap and serif headline" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<text x="0.0" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">Gain per quality grade, pp</text>
+<line x1="142.8" y1="20.0" x2="142.8" y2="114.0" stroke="var(--ink)" stroke-width="1" />
+<text x="142.8" y="134.0" text-anchor="middle" fill="var(--muted)" font-size="11">0</text>
+<text x="188.2" y="134.0" text-anchor="middle" fill="var(--muted)" font-size="11">+2</text>
+<text x="233.8" y="134.0" text-anchor="middle" fill="var(--muted)" font-size="11">+4</text>
+<text x="279.2" y="134.0" text-anchor="middle" fill="var(--muted)" font-size="11">+6</text>
+<text x="112.0" y="42.0" text-anchor="end" fill="var(--ink)" >No visual spec</text>
+<rect x="142.8" y="32.0" width="53.5" height="14" fill="var(--ink)" opacity="0.85"/>
+<line x1="182.4" y1="39.0" x2="210.0" y2="39.0" stroke="var(--ink)" stroke-width="1.2" />
+<text x="216.0" y="43.0" text-anchor="start" fill="var(--ink)" font-size="11">+2.3</text>
+<text x="112.0" y="72.0" text-anchor="end" fill="var(--ink)" >1–2 specs</text>
+<rect x="142.8" y="62.0" width="69.9" height="14" fill="var(--ink)" opacity="0.85"/>
+<line x1="195.6" y1="69.0" x2="229.7" y2="69.0" stroke="var(--ink)" stroke-width="1.2" />
+<text x="235.7" y="73.0" text-anchor="start" fill="var(--ink)" font-size="11">+3.1</text>
+<text x="112.0" y="102.0" text-anchor="end" fill="var(--ink)" >3+ specs</text>
+<rect x="142.8" y="92.0" width="94.9" height="14" fill="var(--ink)" opacity="0.85"/>
+<line x1="224.2" y1="99.0" x2="251.0" y2="99.0" stroke="var(--ink)" stroke-width="1.2" />
+<text x="257.0" y="103.0" text-anchor="start" fill="var(--ink)" font-size="11">+4.2</text>
+<text x="348.0" y="12.0" text-anchor="start" fill="var(--muted)" font-weight="600">Unrequested serif headline, pp</text>
+<line x1="490.8" y1="20.0" x2="490.8" y2="114.0" stroke="var(--ink)" stroke-width="1" />
+<text x="490.8" y="134.0" text-anchor="middle" fill="var(--muted)" font-size="11">0</text>
+<text x="536.2" y="134.0" text-anchor="middle" fill="var(--muted)" font-size="11">+2</text>
+<text x="581.8" y="134.0" text-anchor="middle" fill="var(--muted)" font-size="11">+4</text>
+<text x="627.2" y="134.0" text-anchor="middle" fill="var(--muted)" font-size="11">+6</text>
+<text x="460.0" y="42.0" text-anchor="end" fill="var(--ink)" >Short prompt</text>
+<rect x="490.8" y="32.0" width="24.0" height="14" fill="#7B2D3A" opacity="0.85"/>
+<line x1="484.8" y1="39.0" x2="544.7" y2="39.0" stroke="var(--ink)" stroke-width="1.2" />
+<text x="550.7" y="43.0" text-anchor="start" fill="#7B2D3A" font-size="11">+1.1</text>
+<text x="460.0" y="72.0" text-anchor="end" fill="var(--ink)" >Medium</text>
+<rect x="490.8" y="62.0" width="24.2" height="14" fill="#7B2D3A" opacity="0.85"/>
+<line x1="483.9" y1="69.0" x2="546.0" y2="69.0" stroke="var(--ink)" stroke-width="1.2" />
+<text x="552.0" y="73.0" text-anchor="start" fill="#7B2D3A" font-size="11">+1.1</text>
+<text x="460.0" y="102.0" text-anchor="end" fill="var(--ink)" >Long brief</text>
+<rect x="490.8" y="92.0" width="91.6" height="14" fill="#7B2D3A" opacity="0.85"/>
+<line x1="540.2" y1="99.0" x2="624.6" y2="99.0" stroke="var(--ink)" stroke-width="1.2" />
+<text x="630.6" y="103.0" text-anchor="start" fill="#7B2D3A" font-size="11">+4.0</text>
+</svg>
+</figure>
+    <p class="cap">Left: win-rate gain per +1 quality grade, +2.35 pp [1.74, 2.96] on prompts with no visual spec vs +4.17 [3.58, 4.76] with 3 or more specs (about 1.8×; interaction q=.0001; same sign and significant in both voter halves; replicates on prompt length, q=.026). No page attribute scored better under vague prompts (all q≥.07). Right: serif-headline excess win rate +4.03 pp [2.18, 5.87] on long briefs (over 1,320 characters) vs +1.05 [−0.26, 2.37] on short prompts (interaction q=.033; same sign in both halves); prompts that ask for a typeface are excluded. Same-tournament pairwise logit with model fixed effects, voter-clustered SE; BH over 18 tests (angle 1); grade B, no second-labeler check. Associations only, not within-user comparisons: detailed prompts may come from more demanding users. The overall serif advantage faded after June; this split was not tested by period.</p>
+  </section>
+  <section class="sec">
+    <h2>By angle: penalties fade between two strong pages</h2>
+    <p class="insight">The penalties for a system-font headline and a sparse minimal page show up mainly when both pages are weak; between two strong pages they disappear, while real photos help at every quality level.</p>
+    <figure><svg viewBox="0 0 696 184" width="100%" role="img" aria-label="Penalties by matchup quality" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<line x1="368.3" y1="18.0" x2="368.3" y2="160.0" stroke="var(--ink)" stroke-width="1" />
+<circle cx="224" cy="8" r="4" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.6"/>
+<text x="232.0" y="12.0" text-anchor="start" fill="var(--muted)" >both pages weak (quality 3 or below)</text>
+<circle cx="474" cy="8" r="4.5" fill="var(--ink)"/>
+<text x="482.0" y="12.0" text-anchor="start" fill="var(--muted)" >both pages strong (4 or above)</text>
+<text x="210.0" y="45.0" text-anchor="end" fill="var(--ink)" >Real photos</text>
+<line x1="504.4" y1="41.0" x2="490.8" y2="41.0" stroke="#8A6420" stroke-width="2.2" />
+<circle cx="504.4" cy="41.0" r="4.5" fill="var(--paper)" stroke="#8A6420" stroke-width="1.8"/>
+<circle cx="490.8" cy="41.0" r="5" fill="#8A6420"/>
+<text x="592.0" y="45.0" text-anchor="start" fill="#8A6420" >+4.6 to +4.1 pp</text>
+<text x="210.0" y="79.0" text-anchor="end" fill="var(--ink)" >Generous whitespace</text>
+<line x1="276.7" y1="75.0" x2="326.4" y2="75.0" stroke="#7F8A93" stroke-width="2.2" />
+<circle cx="276.7" cy="75.0" r="4.5" fill="var(--paper)" stroke="#7F8A93" stroke-width="1.8"/>
+<circle cx="326.4" cy="75.0" r="5" fill="#7F8A93"/>
+<text x="592.0" y="79.0" text-anchor="start" fill="#7F8A93" >-3.1 to -1.4 pp</text>
+<text x="210.0" y="113.0" text-anchor="end" fill="var(--ink)" >System-font headline</text>
+<line x1="304.2" y1="109.0" x2="375.2" y2="109.0" stroke="#6E7378" stroke-width="2.2" />
+<circle cx="304.2" cy="109.0" r="4.5" fill="var(--paper)" stroke="#6E7378" stroke-width="1.8"/>
+<circle cx="375.2" cy="109.0" r="5" fill="#6E7378"/>
+<text x="592.0" y="113.0" text-anchor="start" fill="#6E7378" >-2.2 to +0.2 pp</text>
+<text x="210.0" y="147.0" text-anchor="end" fill="var(--ink)" >Minimal-clean style</text>
+<line x1="272.0" y1="143.0" x2="349.8" y2="143.0" stroke="#9AA1A8" stroke-width="2.2" />
+<circle cx="272.0" cy="143.0" r="4.5" fill="var(--paper)" stroke="#9AA1A8" stroke-width="1.8"/>
+<circle cx="349.8" cy="143.0" r="5" fill="#9AA1A8"/>
+<text x="592.0" y="147.0" text-anchor="start" fill="#9AA1A8" >-3.2 to -0.6 pp</text>
+<text x="249.7" y="180.0" text-anchor="middle" fill="var(--muted)" font-size="11">-4</text>
+<text x="309.0" y="180.0" text-anchor="middle" fill="var(--muted)" font-size="11">-2</text>
+<text x="368.3" y="180.0" text-anchor="middle" fill="var(--muted)" font-size="11">0</text>
+<text x="427.7" y="180.0" text-anchor="middle" fill="var(--muted)" font-size="11">+2</text>
+<text x="487.0" y="180.0" text-anchor="middle" fill="var(--muted)" font-size="11">+4</text>
+<text x="546.3" y="180.0" text-anchor="middle" fill="var(--muted)" font-size="11">+6</text>
+</svg>
+</figure>
+    <p class="cap">Actual minus expected win rate (model strength plus quality). Both pages quality 3 or below vs both 4 or above: minimal-clean −3.25 pp [−4.33, −2.17] vs −0.62 [−1.90, 0.65], difference +2.62 [0.97, 4.27], q=.016; system-font headline −2.16 [−3.06, −1.27] vs +0.23 [−1.31, 1.77], difference +2.39 [0.62, 4.17], q=.041; generous whitespace −3.09 [−3.94, −2.23] vs −1.41 [−2.30, −0.53], penalty about halves, q=.036; photos +4.59 [3.55, 5.62] vs +4.13 [3.12, 5.14]. User-cluster bootstrap, BH over 155 tests, same sign in both voter halves; grade B. Quality is a vision-model judgement, so strong minimal pages may simply be fuller pages: this does not show that a well-made minimal page is safe.</p>
+  </section>
+
+  <footer><span>Styles Study taste report, observed until 2026-09-29</span><span>8 / 10</span></footer>
+</div>
+
+<!-- ================= PAGE 9 ================= -->
+<div class="page">
+  <section class="sec" style="margin-top:0;padding-top:0;border-top:0">
+    <h2>By angle: photos help in every model family</h2>
+    <p class="insight">Real photos help pages from every model family, but how much they help varies about threefold.</p>
+    <figure><svg viewBox="0 0 696 228" width="100%" role="img" aria-label="Photo advantage by model family" style="display:block;overflow:visible" font-family="var(--sans)" font-size="12">
+<line x1="237.8" y1="6.0" x2="237.8" y2="204.0" stroke="var(--ink)" stroke-width="1" />
+<text x="190.0" y="21.0" text-anchor="end" fill="var(--ink)" >Anthropic</text>
+<line x1="424.2" y1="17.0" x2="553.0" y2="17.0" stroke="#8A6420" stroke-width="1.6" />
+<circle cx="488.6" cy="17.0" r="4.5" fill="#8A6420"/>
+<text x="561.0" y="21.0" text-anchor="start" fill="#8A6420" font-size="11">+6.6</text>
+<text x="190.0" y="43.0" text-anchor="end" fill="var(--ink)" >DeepSeek</text>
+<line x1="389.5" y1="39.0" x2="569.8" y2="39.0" stroke="#8A6420" stroke-width="1.6" />
+<circle cx="479.6" cy="39.0" r="4.5" fill="#8A6420"/>
+<text x="577.8" y="43.0" text-anchor="start" fill="#8A6420" font-size="11">+6.4</text>
+<text x="190.0" y="65.0" text-anchor="end" fill="var(--ink)" >Alibaba (Qwen)</text>
+<line x1="353.2" y1="61.0" x2="559.6" y2="61.0" stroke="#8A6420" stroke-width="1.6" />
+<circle cx="456.4" cy="61.0" r="4.5" fill="#8A6420"/>
+<text x="567.6" y="65.0" text-anchor="start" fill="#8A6420" font-size="11">+5.8</text>
+<text x="190.0" y="87.0" text-anchor="end" fill="var(--ink)" >OpenAI</text>
+<line x1="368.0" y1="83.0" x2="500.6" y2="83.0" stroke="#8A6420" stroke-width="1.6" />
+<circle cx="434.3" cy="83.0" r="4.5" fill="#8A6420"/>
+<text x="508.6" y="87.0" text-anchor="start" fill="#8A6420" font-size="11">+5.2</text>
+<text x="190.0" y="109.0" text-anchor="end" fill="var(--ink)" >Google</text>
+<line x1="339.7" y1="105.0" x2="480.7" y2="105.0" stroke="#8A6420" stroke-width="1.6" />
+<circle cx="410.2" cy="105.0" r="4.5" fill="#8A6420"/>
+<text x="488.7" y="109.0" text-anchor="start" fill="#8A6420" font-size="11">+4.6</text>
+<text x="190.0" y="131.0" text-anchor="end" fill="var(--ink)" >Moonshot (Kimi)</text>
+<line x1="298.7" y1="127.0" x2="476.7" y2="127.0" stroke="#8A6420" stroke-width="1.6" />
+<circle cx="387.7" cy="127.0" r="4.5" fill="#8A6420"/>
+<text x="484.7" y="131.0" text-anchor="start" fill="#8A6420" font-size="11">+4.0</text>
+<text x="190.0" y="153.0" text-anchor="end" fill="var(--ink)" >xAI</text>
+<line x1="325.2" y1="149.0" x2="443.8" y2="149.0" stroke="#8A6420" stroke-width="1.6" />
+<circle cx="384.5" cy="149.0" r="4.5" fill="#8A6420"/>
+<text x="451.8" y="153.0" text-anchor="start" fill="#8A6420" font-size="11">+3.9</text>
+<text x="190.0" y="175.0" text-anchor="end" fill="var(--ink)" >Xiaomi</text>
+<line x1="226.7" y1="171.0" x2="459.8" y2="171.0" stroke="#8A6420" stroke-width="1.6" />
+<circle cx="343.3" cy="171.0" r="4.5" fill="#8A6420"/>
+<text x="467.8" y="175.0" text-anchor="start" fill="#8A6420" font-size="11">+2.8</text>
+<text x="190.0" y="197.0" text-anchor="end" fill="var(--ink)" >Zhipu (GLM)</text>
+<line x1="259.3" y1="193.0" x2="365.5" y2="193.0" stroke="#8A6420" stroke-width="1.6" />
+<circle cx="312.4" cy="193.0" r="4.5" fill="#8A6420"/>
+<text x="373.5" y="197.0" text-anchor="start" fill="#8A6420" font-size="11">+2.0</text>
+<text x="237.8" y="224.0" text-anchor="middle" fill="var(--muted)" font-size="11">0</text>
+<text x="313.5" y="224.0" text-anchor="middle" fill="var(--muted)" font-size="11">+2 pp</text>
+<text x="389.1" y="224.0" text-anchor="middle" fill="var(--muted)" font-size="11">+4 pp</text>
+<text x="464.7" y="224.0" text-anchor="middle" fill="var(--muted)" font-size="11">+6 pp</text>
+<text x="540.4" y="224.0" text-anchor="middle" fill="var(--muted)" font-size="11">+8 pp</text>
+</svg>
+</figure>
+    <p class="cap">Actual minus expected win rate (model strength plus quality) for pages with real photos, by the family of the photo page: Anthropic +6.6 pp [4.9, 8.3] down to Zhipu +2.0 [0.6, 3.4]. Heterogeneity Cochran Q = 24.2 on 8 df, q=.017, I² = 0.67; every family positive in both voter halves. Grade B. The photos themselves were not inspected, so the gap reflects execution in a broad sense.</p>
+  </section>
+  <section class="sec">
+    <h2>Cross-validation</h2>
+    <p class="insight">The rule findings survive almost every independent check.</p>
+    <table >
+      <thead><tr><th>Check</th><th>Rules out</th><th class="c">Drivers</th><th class="c">Supply</th><th class="c">Rules</th><th>Key number</th></tr></thead>
+      <tbody>
+        <tr><td>Time holdout</td><td>Period overfitting</td><td class="c ok">✓</td><td class="c na">–</td><td class="c ok">✓</td><td>Jul–Sep quintile gap +13.5 pp [12.1, 15.1], rules chosen on Jan–Jun only</td></tr>
+        <tr><td>2nd labeler (claude-haiku-5.5)</td><td>Labeler habits</td><td class="c na">–</td><td class="c pt">◐</td><td class="c ok">✓</td><td>Grade-A rules keep sign with CI excluding 0; serif, oversized headline fail</td></tr>
+        <tr><td>Actual vs model-expected</td><td>A model artefact</td><td class="c na">–</td><td class="c ok">✓</td><td class="c ok">✓</td><td>Three baselines agree within 0.4 pp on attributes</td></tr>
+        <tr><td>Quality bands</td><td>Style is quality</td><td class="c na">–</td><td class="c ok">✓</td><td class="c ok">✓</td><td>Penalties hold; luxury +0.087 [−0.001, 0.175] does not</td></tr>
+        <tr><td>User split-halves</td><td>Heavy voters</td><td class="c ok">✓</td><td class="c ok">✓</td><td class="c ok">✓</td><td>Every charted attribute keeps its sign in both halves</td></tr>
+        <tr><td>HTML rules vs vision</td><td>A vision artefact</td><td class="c na">–</td><td class="c ok">✓</td><td class="c pt">◐</td><td>Violet κ 0.59, monthly r 0.99; serif only when visible</td></tr>
+      </tbody>
+    </table>
+    <p class="cap">The rule findings pass five of six independent checks; HTML rules and vision labels agree only in part. Drivers = what decides a vote; Supply = supply trends; Rules = attribute, excess and holdout findings. ✓ passes, ◐ partly, – not applicable.</p>
+  </section>
+  <section class="sec">
+    <h2>The taste file: core and grade-A rules</h2>
+    <table>
+      <thead><tr><th>Rule (default when the brief is silent)</th><th>Effect [95% CI], q</th><th class="c">Grade</th><th>Holdout</th></tr></thead>
+      <tbody>
+        <tr><td>Real photos; never a page without imagery</td><td>photo vs icons +4.4 pp [3.7, 5.1], q=2×10⁻³⁴</td><td class="c">A</td><td>Core</td></tr>
+        <tr><td>Full-bleed photo hero</td><td>vs centered text +5.6 pp [4.6, 6.7], q=5×10⁻²⁴</td><td class="c">B</td><td>Core</td></tr>
+        <tr><td>No generous whitespace</td><td>vs balanced −2.0 pp [−2.5, −1.5], q=10⁻¹³</td><td class="c">B</td><td>Core</td></tr>
+        <tr><td>Headline above body size</td><td>normal vs large −1.7 pp [−2.3, −1.0], q=4×10⁻⁵</td><td class="c">B</td><td>Core</td></tr>
+        <tr><td>Deliberate display font on the H1</td><td>system stack vs Inter −1.6 pp [−2.6, −0.6], q=.008</td><td class="c">B</td><td>Core</td></tr>
+        <tr><td>Fill the page with content blocks</td><td>β +0.078 per density point (1–5) [0.064, 0.092], q=3×10⁻²⁶</td><td class="c">A</td><td>Not in score</td></tr>
+        <tr><td>Full top navigation</td><td>minimal vs full −1.1 pp [−1.6, −0.5], q=.001</td><td class="c">A</td><td>Not in score</td></tr>
+        <tr><td>No dominant gradient</td><td>vs subtle −0.7 pp [−1.3, −0.2], q=.040</td><td class="c">A</td><td>Not in score</td></tr>
+      </tbody>
+    </table>
+    <p class="cap">Core = reproduces alone in the Jul–Sep holdout. β is log-odds (0.04 ≈ +1 pp). Every rule in taste.md carries a detector, brief override and evidence files, and a lint re-reads each number.</p>
+  </section>
+
+  <footer><span>Styles Study taste report, observed until 2026-09-29</span><span>9 / 10</span></footer>
+</div>
+
+<!-- ================= PAGE 10 ================= -->
+<div class="page">
+  <section class="sec" style="margin-top:0;padding-top:0;border-top:0">
+    <div class="qa">
+      <div><h3>Data we wanted</h3><ul>
+        <li>What the voter saw: viewport, device, live page or screenshot.</li>
+        <li>A one-tap reason and separate works / complete / looks-good scores.</li></ul></div>
+      <div><h3>Scaling without humans</h3><ul>
+        <li>A rule stays only if it replicates in next month's holdout.</li>
+        <li>Lint, holdout gate and second labeler replace review.</li></ul></div>
+      <div><h3>Culture</h3><ul>
+        <li>1 of 60 scene tests significant (food photos).</li>
+        <li>Language, IP and device are proxies, not national taste.</li></ul></div>
+      <div><h3>Limits</h3><ul>
+        <li>Quality labels agree at 0.48; no user-level profiles.</li>
+        <li>Screenshots, not what voters saw; observed until 2026-09-29.</li></ul></div>
+    </div>
+  </section>
+
+  <footer><span>All numbers trace to evidence files listed in taste.yaml. The layout uses the voted-for look on purpose.</span><span>10 / 10</span></footer>
+</div>
+
+</body>
+</html>

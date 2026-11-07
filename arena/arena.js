@@ -10,7 +10,7 @@ let votes=store.get(), i=0, model='deepseek', dev={A:'desktop',B:'desktop'};
 document.head.insertAdjacentHTML('beforeend',`<style>
 .ar-tabs{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;display:flex;padding:4px;gap:4px;background:var(--panel);box-shadow:0 0 0 1px rgba(143,198,255,.18),0 6px 24px rgba(0,0,0,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:999px}
 .ar-tabs a{padding:8px 22px;border-radius:999px;font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--starlight);text-decoration:none;font-family:var(--font-ui)}
-.ar-tabs a:hover{background:rgba(143,198,255,.10)} .ar-tabs a.on{background:var(--ice);color:#0b1220}
+.ar-tabs a:hover{background:rgba(143,198,255,.10)} .ar-tabs a.on{background:var(--ice);color:#0b1220} .ar-sep{width:1px;margin:6px 4px;background:var(--line-strong)} .ar-tabs a.ar-ext{font-weight:500;font-size:13px;padding:8px 16px;color:var(--dim);border:1px solid var(--line)} .ar-tabs a.ar-ext:hover{color:var(--starlight);border-color:rgba(143,198,255,.45)}
 #arena{position:fixed;inset:0;z-index:50;overflow:auto;background:radial-gradient(ellipse at 50% 30%,#0b1120,#050710 70%);display:none;padding:62px 0 32px}
 body.arena-on #arena{display:block}
 .ar-w{max-width:1520px;margin:0 auto;padding:0 24px}
@@ -81,7 +81,7 @@ body.arena-on #arena{display:block}
 </style>`);
 
 document.body.insertAdjacentHTML('beforeend',`
-<nav class="ar-tabs"><a href="#starmap" data-t="starmap">Starmap</a><a href="#arena" data-t="arena">Arena</a></nav>
+<nav class="ar-tabs"><a href="#starmap" data-t="starmap">Starmap</a><a href="#arena" data-t="arena">Arena</a><span class="ar-sep"></span><a class="ar-ext" href="report.html" target="_blank" rel="noopener">Report ↗</a><a class="ar-ext" href="architecture.html" target="_blank" rel="noopener">Architecture ↗</a></nav>
 <section id="arena"><div class="ar-w">
  <div class="ar-top"><div><div class="sm-eyebrow">taste.md arena · ${P.length} real prompts × 3 models</div><h1>Same prompt, same model — left with taste.md, right without.</h1>
   <p>Only the system prompt differs: the left page had taste.md, the right did not. All three models answered every prompt; switch models above.</p></div>
